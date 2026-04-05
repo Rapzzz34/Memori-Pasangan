@@ -11,10 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Save } from "lucide-react";
 
 const settingsSchema = z.object({
-  person1Name: z.string().min(1, "Name is required"),
-  person2Name: z.string().min(1, "Name is required"),
+  person1Name: z.string().min(1, "Nama wajib diisi"),
+  person2Name: z.string().min(1, "Nama wajib diisi"),
   loveDate: z.string().optional().nullable(),
-  loveMessage: z.string().min(1, "Message is required"),
+  loveMessage: z.string().min(1, "Pesan wajib diisi"),
+  person1Birthday: z.string().optional().nullable(),
+  person2Birthday: z.string().optional().nullable(),
 });
 
 export function SettingsForm() {
@@ -27,6 +29,8 @@ export function SettingsForm() {
       person2Name: "",
       loveDate: "",
       loveMessage: "",
+      person1Birthday: "",
+      person2Birthday: "",
     },
   });
 
@@ -37,6 +41,8 @@ export function SettingsForm() {
         person2Name: settings.person2Name,
         loveDate: settings.loveDate ? settings.loveDate.split('T')[0] : "",
         loveMessage: settings.loveMessage,
+        person1Birthday: settings.person1Birthday ? settings.person1Birthday.split('T')[0] : "",
+        person2Birthday: settings.person2Birthday ? settings.person2Birthday.split('T')[0] : "",
       });
     }
   }, [settings, form]);
@@ -46,6 +52,8 @@ export function SettingsForm() {
       data: {
         ...values,
         loveDate: values.loveDate ? new Date(values.loveDate).toISOString() : null,
+        person1Birthday: values.person1Birthday ? new Date(values.person1Birthday).toISOString() : null,
+        person2Birthday: values.person2Birthday ? new Date(values.person2Birthday).toISOString() : null,
       },
     });
   }
@@ -57,9 +65,9 @@ export function SettingsForm() {
   return (
     <Card className="shadow-sm border-primary/10">
       <CardHeader>
-        <CardTitle className="font-serif text-2xl text-primary">Journal Settings</CardTitle>
+        <CardTitle className="font-serif text-2xl text-primary">Pengaturan Web</CardTitle>
         <CardDescription>
-          Customize the details of your shared journal.
+          Atur nama, tanggal jadian, ultah, dan pesan untuk tampilan publik.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -71,9 +79,9 @@ export function SettingsForm() {
                 name="person1Name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Person's Name</FormLabel>
+                    <FormLabel>Nama Pertama</FormLabel>
                     <FormControl>
-                      <Input placeholder="E.g. Romeo" {...field} />
+                      <Input placeholder="Mis. Budi" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -84,9 +92,9 @@ export function SettingsForm() {
                 name="person2Name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Second Person's Name</FormLabel>
+                    <FormLabel>Nama Kedua</FormLabel>
                     <FormControl>
-                      <Input placeholder="E.g. Juliet" {...field} />
+                      <Input placeholder="Mis. Siti" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +107,7 @@ export function SettingsForm() {
               name="loveDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Anniversary Date</FormLabel>
+                  <FormLabel>Tanggal Jadian (Anniversary)</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} value={field.value || ""} />
                   </FormControl>
@@ -108,17 +116,49 @@ export function SettingsForm() {
               )}
             />
 
+            <div className="border border-primary/10 rounded-xl p-4 bg-primary/5 space-y-4">
+              <p className="text-sm font-medium text-foreground">Ulang Tahun (untuk countdown)</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="person1Birthday"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ultah {form.watch("person1Name") || "Orang Pertama"}</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} value={field.value || ""} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="person2Birthday"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ultah {form.watch("person2Name") || "Orang Kedua"}</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} value={field.value || ""} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
             <FormField
               control={form.control}
               name="loveMessage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hero Message</FormLabel>
+                  <FormLabel>Pesan Cinta di Halaman Utama</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Write a sweet message to show on the homepage..." 
+                    <Textarea
+                      placeholder="Tulis pesan manis untuk ditampilkan di halaman utama..."
                       className="resize-none h-24"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -129,7 +169,7 @@ export function SettingsForm() {
             <div className="flex justify-end">
               <Button type="submit" disabled={isUpdating} className="gap-2">
                 {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Save Settings
+                Simpan Pengaturan
               </Button>
             </div>
           </form>

@@ -130,6 +130,8 @@ export const GetSettingsResponse = zod.object({
   loveDate: zod.string().nullable(),
   loveMessage: zod.string(),
   coverImageUrl: zod.string().nullable(),
+  person1Birthday: zod.string().nullable(),
+  person2Birthday: zod.string().nullable(),
   updatedAt: zod.string(),
 });
 
@@ -142,6 +144,8 @@ export const UpdateSettingsBody = zod.object({
   person2Name: zod.string().optional(),
   loveDate: zod.string().nullish(),
   loveMessage: zod.string().optional(),
+  person1Birthday: zod.string().nullish(),
+  person2Birthday: zod.string().nullish(),
 });
 
 export const UpdateSettingsResponse = zod.object({
@@ -151,5 +155,7 @@ export const UpdateSettingsResponse = zod.object({
   loveDate: zod.string().nullable(),
   loveMessage: zod.string(),
   coverImageUrl: zod.string().nullable(),
+  person1Birthday: zod.string().nullable(),
+  person2Birthday: zod.string().nullable(),
   updatedAt: zod.string(),
 });

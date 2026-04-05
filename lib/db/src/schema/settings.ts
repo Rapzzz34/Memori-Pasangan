@@ -9,6 +9,8 @@ export const siteSettingsTable = pgTable("site_settings", {
   loveDate: text("love_date"),
   loveMessage: text("love_message").notNull().default(""),
   coverImageUrl: text("cover_image_url"),
+  person1Birthday: text("person1_birthday"),
+  person2Birthday: text("person2_birthday"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });
 

@@ -12,4 +12,8 @@ export interface UpdateSettingsBody {
   /** @nullable */
   loveDate?: string | null;
   loveMessage?: string;
+  /** @nullable */
+  person1Birthday?: string | null;
+  /** @nullable */
+  person2Birthday?: string | null;
 }

@@ -377,6 +377,10 @@ components:
           type: string
         coverImageUrl:
           type: ["string", "null"]
+        person1Birthday:
+          type: ["string", "null"]
+        person2Birthday:
+          type: ["string", "null"]
         updatedAt:
           type: string
       required:
@@ -386,6 +390,8 @@ components:
         - loveDate
         - loveMessage
         - coverImageUrl
+        - person1Birthday
+        - person2Birthday
         - updatedAt
 
     UpdateSettingsBody:
@@ -399,3 +405,7 @@ components:
           type: ["string", "null"]
         loveMessage:
           type: string
+        person1Birthday:
+          type: ["string", "null"]
+        person2Birthday:
+          type: ["string", "null"]

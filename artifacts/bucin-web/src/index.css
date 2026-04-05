@@ -78,45 +78,45 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 36 33% 97%;
-  --foreground: 26 20% 24%;
-  --border: 36 15% 90%;
+  --background: 350 80% 94%;
+  --foreground: 340 35% 18%;
+  --border: 350 40% 82%;
   --card: 0 0% 100%;
-  --card-foreground: 26 20% 24%;
-  --card-border: 36 15% 90%;
+  --card-foreground: 340 35% 18%;
+  --card-border: 350 30% 88%;
   
-  --sidebar: 36 33% 97%;
-  --sidebar-foreground: 26 20% 24%;
-  --sidebar-border: 36 15% 90%;
-  --sidebar-primary: 353 44% 72%;
+  --sidebar: 350 60% 90%;
+  --sidebar-foreground: 340 35% 18%;
+  --sidebar-border: 350 40% 82%;
+  --sidebar-primary: 350 72% 58%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 351 41% 91%;
-  --sidebar-accent-foreground: 26 20% 24%;
-  --sidebar-ring: 353 44% 72%;
+  --sidebar-accent: 350 50% 88%;
+  --sidebar-accent-foreground: 340 35% 18%;
+  --sidebar-ring: 350 72% 58%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 26 20% 24%;
-  --popover-border: 36 15% 90%;
+  --popover-foreground: 340 35% 18%;
+  --popover-border: 350 30% 88%;
 
-  --primary: 353 44% 72%;
+  --primary: 350 72% 58%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 351 41% 91%;
-  --secondary-foreground: 26 20% 24%;
-  --muted: 36 15% 90%;
-  --muted-foreground: 26 10% 50%;
-  --accent: 351 41% 91%;
-  --accent-foreground: 26 20% 24%;
+  --secondary: 350 50% 88%;
+  --secondary-foreground: 340 35% 18%;
+  --muted: 350 30% 88%;
+  --muted-foreground: 340 20% 45%;
+  --accent: 350 50% 88%;
+  --accent-foreground: 340 35% 18%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
 
-  --input: 36 15% 90%;
-  --ring: 353 44% 72%;
+  --input: 350 30% 86%;
+  --ring: 350 72% 58%;
   
-  --chart-1: 353 44% 72%;
-  --chart-2: 351 41% 91%;
-  --chart-3: 36 15% 90%;
-  --chart-4: 36 33% 97%;
-  --chart-5: 26 20% 24%;
+  --chart-1: 350 72% 58%;
+  --chart-2: 350 50% 88%;
+  --chart-3: 350 30% 88%;
+  --chart-4: 350 80% 94%;
+  --chart-5: 340 35% 18%;
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: 'Playfair Display', serif;
