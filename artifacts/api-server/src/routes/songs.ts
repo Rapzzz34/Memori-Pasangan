@@ -21,12 +21,12 @@ const audioStorage = multer.diskStorage({
 
 const uploadAudio = multer({
   storage: audioStorage,
-  limits: { fileSize: 20 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    if (file.mimetype.startsWith("audio/")) {
+    if (file.mimetype.startsWith("audio/") || file.mimetype.startsWith("video/")) {
       cb(null, true);
     } else {
-      cb(new Error("Hanya file audio yang diizinkan"));
+      cb(new Error("Hanya file audio atau video yang diizinkan"));
     }
   },
 });

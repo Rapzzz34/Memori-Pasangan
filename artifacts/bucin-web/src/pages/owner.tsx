@@ -331,7 +331,7 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
         >
           <Music2 className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate flex-1">
-            {audioFile ? audioFile.name : "Upload audio (opsional)"}
+            {audioFile ? audioFile.name : "Upload audio / video (opsional)"}
           </span>
           {audioFile && (
             <button
@@ -340,7 +340,7 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
               onClick={e => { e.preventDefault(); setAudioFile(null); if (fileRef.current) fileRef.current.value = ""; }}
             >✕</button>
           )}
-          <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
+          <input ref={fileRef} type="file" accept="audio/*,video/*" className="hidden" onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
         </label>
         <Button
           size="sm"
