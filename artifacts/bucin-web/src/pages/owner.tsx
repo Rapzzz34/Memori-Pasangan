@@ -63,7 +63,7 @@ export default function OwnerPanel() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-xl font-serif" style={{ color: "rgba(255,255,255,0.88)" }}>Owner Panel</h1>
-            <p className="text-xs mt-0.5" style={{ color: "rgba(255,150,200,0.42)" }}>
+            <p className="text-xs mt-0.5" style={{ color: "rgba(255,150,200,0.60)" }}>
               {personId === 1
                 ? `Login sebagai ${settings?.person1Name || "Orang Pertama"}`
                 : personId === 2
@@ -77,7 +77,7 @@ export default function OwnerPanel() {
             size="sm"
             onClick={() => logout()}
             className="text-xs gap-1.5"
-            style={{ color: "rgba(255,150,200,0.38)" }}
+            style={{ color: "rgba(255,255,255,0.55)" }}
           >
             <LogOut className="w-3.5 h-3.5" />
             Logout
@@ -88,9 +88,9 @@ export default function OwnerPanel() {
           <TabsList
             className="w-full grid grid-cols-5 h-auto p-1 gap-1 rounded-xl"
             style={{
-              background: "rgba(255,255,255,0.65)",
+              background: "rgba(255,255,255,0.07)",
               backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,180,220,0.30)",
+              border: "1px solid rgba(255,30,140,0.18)",
             }}
           >
             {[
@@ -104,7 +104,7 @@ export default function OwnerPanel() {
                 key={tab.value}
                 value={tab.value}
                 className="flex flex-col gap-1 py-2 text-[10px] rounded-lg data-[state=active]:shadow-sm"
-                style={{ color: "rgba(255,150,200,0.45)" }}
+                style={{ color: "rgba(255,255,255,0.55)" }}
               >
                 {tab.icon}
                 {tab.label}
@@ -145,7 +145,7 @@ function MemoriesSection() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <p className="text-xs" style={{ color: "rgba(255,150,200,0.38)" }}>{memories.length} kenangan</p>
+        <p className="text-xs" style={{ color: "rgba(255,255,255,0.50)" }}>{memories.length} kenangan</p>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger asChild>
             <Button size="sm" className="gap-1.5 text-xs h-8 text-white" style={{ background: G }}>
@@ -168,7 +168,7 @@ function MemoriesSection() {
               <img src={memory.imageUrl} alt={memory.title} className="w-14 h-14 object-cover rounded-xl shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate" style={{ color: "rgba(255,255,255,0.88)" }}>{memory.title}</p>
-                {memory.memoryDate && <p className="text-xs" style={{ color: "rgba(255,150,200,0.34)" }}>{formatDate(memory.memoryDate)}</p>}
+                {memory.memoryDate && <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{formatDate(memory.memoryDate)}</p>}
               </div>
               <div className="flex gap-1 shrink-0">
                 <Button variant="ghost" size="icon" className="w-7 h-7" style={{ color: "rgba(255,255,255,0.28)" }}
@@ -177,7 +177,7 @@ function MemoriesSection() {
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="ghost" size="icon" className="w-7 h-7" style={{ color: "rgba(255,150,200,0.28)" }}>
+                    <Button variant="ghost" size="icon" className="w-7 h-7" style={{ color: "rgba(255,255,255,0.45)" }}>
                       <Trash2 className="w-3.5 h-3.5" />
                     </Button>
                   </AlertDialogTrigger>
@@ -256,7 +256,7 @@ function BucketListSection() {
                 {item.text}
               </span>
               <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
-                style={{ color: "rgba(255,255,255,0.20)" }}
+                style={{ color: "rgba(255,255,255,0.38)" }}
                 onClick={() => deleteItem({ id: item.id })}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
@@ -306,7 +306,7 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
   return (
     <div className="space-y-4">
       <div className="rounded-2xl p-4 space-y-3" style={cardStyle}>
-        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(255,150,200,0.38)" }}>
+        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(255,255,255,0.50)" }}>
           Tambah Lagu
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -323,8 +323,8 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
               className="text-xs px-3 py-1.5 rounded-lg border transition-colors"
               style={{
                 background: person === p ? "hsl(330,100%,55%)" : "rgba(255,255,255,0.80)",
-                borderColor: person === p ? "hsl(330,100%,55%)" : "rgba(255,150,200,0.35)",
-                color: person === p ? "white" : "rgba(255,200,220,0.55)",
+                borderColor: person === p ? "hsl(330,100%,55%)" : "rgba(255,255,255,0.18)",
+                color: person === p ? "white" : "rgba(255,255,255,0.65)",
                 boxShadow: person === p ? "0 0 12px rgba(255,20,147,0.35)" : "none",
               }}
             >
@@ -337,7 +337,7 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
           style={{
             background: "rgba(255,255,255,0.80)",
             borderColor: "rgba(255,150,200,0.35)",
-            color: "rgba(255,150,200,0.42)",
+            color: "rgba(255,150,200,0.60)",
           }}
         >
           <Music2 className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(330,100%,55%)" }} />
@@ -376,17 +376,17 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
                   </p>
                   {!song.audioUrl && (
                     <span className="text-[9px] px-1.5 py-0.5 rounded border shrink-0"
-                      style={{ color: "rgba(255,150,200,0.28)", borderColor: "rgba(255,150,200,0.25)" }}>
+                      style={{ color: "rgba(255,255,255,0.35)", borderColor: "rgba(255,255,255,0.18)" }}>
                       no audio
                     </span>
                   )}
                 </div>
-                <p className="text-xs" style={{ color: "rgba(255,150,200,0.34)" }}>
+                <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
                   {song.artist ? `${song.artist} · ` : ""}{personLabels[song.person] ?? song.person}
                 </p>
               </div>
               <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
-                style={{ color: "rgba(255,255,255,0.20)" }}
+                style={{ color: "rgba(255,255,255,0.38)" }}
                 onClick={() => deleteSong({ id: song.id })}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
@@ -423,7 +423,7 @@ function DiarySection() {
   return (
     <div className="space-y-4">
       <div className="rounded-2xl p-4 space-y-3" style={cardStyle}>
-        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(255,150,200,0.38)" }}>
+        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(255,255,255,0.50)" }}>
           Tulis Entri Baru
         </p>
         <Textarea
@@ -440,7 +440,7 @@ function DiarySection() {
             style={{
               background: "rgba(255,255,255,0.80)",
               borderColor: "rgba(255,150,200,0.35)",
-              color: "rgba(255,150,200,0.42)",
+              color: "rgba(255,150,200,0.60)",
             }}
           >
             <ImageIcon className="w-3.5 h-3.5" style={{ color: "hsl(330,100%,55%)" }} />
@@ -468,13 +468,13 @@ function DiarySection() {
               <div className="p-3">
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-xs leading-relaxed flex-1 line-clamp-3 whitespace-pre-line"
-                    style={{ color: "rgba(255,200,220,0.65)" }}>
+                    style={{ color: "rgba(255,255,255,0.65)" }}>
                     {entry.content}
                   </p>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
-                        style={{ color: "rgba(255,255,255,0.20)" }}>
+                        style={{ color: "rgba(255,255,255,0.38)" }}>
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
                     </AlertDialogTrigger>
@@ -491,7 +491,7 @@ function DiarySection() {
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
-                <p className="text-[10px] mt-1" style={{ color: "rgba(255,150,200,0.28)" }}>
+                <p className="text-[10px] mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>
                   {new Date(entry.createdAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}
                 </p>
               </div>
@@ -513,7 +513,7 @@ function EmptyState({ icon, label }: { icon: React.ReactNode; label: string }) {
       }}
     >
       {icon}
-      <p className="text-xs" style={{ color: "rgba(255,150,200,0.28)" }}>{label}</p>
+      <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{label}</p>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export function BottomNav() {
               key={href}
               href={href}
               className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all min-w-[52px]"
-              style={{ color: active ? "hsl(330,100%,62%)" : "rgba(255,255,255,0.22)" }}
+              style={{ color: active ? "hsl(330,100%,62%)" : "rgba(255,255,255,0.45)" }}
             >
               <div
                 className="relative flex items-center justify-center"
@@ -46,7 +46,7 @@ export function BottomNav() {
                   className="w-5 h-5 transition-all"
                   style={{
                     fill: active ? "hsl(330,100%,62%)" : "transparent",
-                    stroke: active ? "hsl(330,100%,62%)" : "rgba(255,255,255,0.22)",
+                    stroke: active ? "hsl(330,100%,62%)" : "rgba(255,255,255,0.45)",
                     strokeWidth: 1.5,
                     filter: active ? "drop-shadow(0 0 6px rgba(255,20,147,0.7))" : "none",
                   }}
