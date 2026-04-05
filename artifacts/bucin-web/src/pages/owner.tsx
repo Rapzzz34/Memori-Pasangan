@@ -278,12 +278,14 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
 
   const handleAdd = () => {
     if (!title.trim()) return;
-    const formData = new FormData();
-    formData.append("title", title.trim());
-    formData.append("artist", artist.trim());
-    formData.append("person", person);
-    if (audioFile) formData.append("audio", audioFile);
-    createSong({ data: formData as unknown as { title: string } }, {
+    createSong({
+      data: {
+        title: title.trim(),
+        artist: artist.trim() || undefined,
+        person,
+        audio: audioFile ?? undefined,
+      }
+    }, {
       onSuccess: () => {
         setTitle("");
         setArtist("");
@@ -392,10 +394,13 @@ function DiarySection() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleSave = () => {
-    const formData = new FormData();
-    formData.append("content", content);
-    if (imageFile) formData.append("image", imageFile);
-    createEntry({ data: formData as unknown as { content?: string } }, {
+    if (!content.trim()) return;
+    createEntry({
+      data: {
+        content: content.trim(),
+        image: imageFile ?? undefined,
+      }
+    }, {
       onSuccess: () => {
         setContent("");
         setImageFile(null);
