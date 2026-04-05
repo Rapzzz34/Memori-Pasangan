@@ -325,25 +325,32 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
             </button>
           ))}
         </div>
-        <div className="flex gap-2">
-          <label
-            className="flex-1 flex items-center gap-2 text-xs rounded-lg px-3 py-2 border border-white/12 cursor-pointer text-white/35"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <Music2 className="w-3.5 h-3.5" />
+        <label
+          className="flex items-center gap-2 text-xs rounded-lg px-3 py-2.5 border border-white/12 cursor-pointer text-white/35 w-full overflow-hidden"
+          style={{ background: "rgba(255,255,255,0.04)" }}
+        >
+          <Music2 className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate flex-1">
             {audioFile ? audioFile.name : "Upload audio (opsional)"}
-            <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
-          </label>
-          <Button
-            size="sm"
-            onClick={handleAdd}
-            disabled={isCreating || !title.trim()}
-            className="h-9 shrink-0 text-xs text-white px-4"
-            style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
-          >
-            Tambah
-          </Button>
-        </div>
+          </span>
+          {audioFile && (
+            <button
+              type="button"
+              className="shrink-0 text-white/30 hover:text-white/60 text-xs"
+              onClick={e => { e.preventDefault(); setAudioFile(null); if (fileRef.current) fileRef.current.value = ""; }}
+            >✕</button>
+          )}
+          <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
+        </label>
+        <Button
+          size="sm"
+          onClick={handleAdd}
+          disabled={isCreating || !title.trim()}
+          className="w-full h-10 text-sm font-medium text-white"
+          style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
+        >
+          {isCreating ? "Menyimpan..." : "+ Tambah Lagu"}
+        </Button>
       </div>
 
       {songs.length === 0 ? (

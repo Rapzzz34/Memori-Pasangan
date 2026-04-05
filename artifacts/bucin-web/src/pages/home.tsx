@@ -108,17 +108,19 @@ export default function Home() {
 
           {/* Live Timer */}
           {settings?.loveDate && (
-            <div
-              className="inline-flex items-center gap-3 rounded-2xl px-6 py-5 border border-white/8 mx-auto"
-              style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(10px)" }}
-            >
-              <TimeBlock value={time.days} label="hari" />
-              <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
-              <TimeBlock value={time.hours} label="jam" />
-              <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
-              <TimeBlock value={time.minutes} label="menit" />
-              <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
-              <TimeBlock value={time.seconds} label="detik" />
+            <div className="flex justify-center w-full">
+              <div
+                className="flex items-center gap-3 rounded-2xl px-6 py-5 border border-white/8"
+                style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(10px)" }}
+              >
+                <TimeBlock value={time.days} label="hari" />
+                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <TimeBlock value={time.hours} label="jam" />
+                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <TimeBlock value={time.minutes} label="menit" />
+                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <TimeBlock value={time.seconds} label="detik" />
+              </div>
             </div>
           )}
 
