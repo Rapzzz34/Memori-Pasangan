@@ -82,3 +82,55 @@ export interface UpdateSettingsBody {
   /** @nullable */
   person2Birthday?: string | null;
 }
+
+export interface BucketListItem {
+  id: number;
+  text: string;
+  completed: boolean;
+  createdAt: string;
+}
+
+export interface CreateBucketListBody {
+  text: string;
+}
+
+export interface UpdateBucketListBody {
+  text?: string;
+  completed?: boolean;
+}
+
+export interface Song {
+  id: number;
+  title: string;
+  artist: string;
+  /** @nullable */
+  audioUrl: string | null;
+  person: string;
+  createdAt: string;
+}
+
+export interface CreateSongBody {
+  title: string;
+  artist?: string;
+  person?: string;
+  audio?: Blob;
+}
+
+export interface DiaryEntry {
+  id: number;
+  content: string;
+  /** @nullable */
+  imageUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateDiaryBody {
+  content?: string;
+  image?: Blob;
+}
+
+export interface UpdateDiaryBody {
+  content?: string;
+  image?: Blob;
+}

@@ -17,7 +17,12 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  BucketListItem,
+  CreateBucketListBody,
+  CreateDiaryBody,
   CreateMemoryBody,
+  CreateSongBody,
+  DiaryEntry,
   ErrorResponse,
   HealthStatus,
   LoginBody,
@@ -26,6 +31,9 @@ import type {
   Memory,
   MessageResponse,
   SiteSettings,
+  Song,
+  UpdateBucketListBody,
+  UpdateDiaryBody,
   UpdateMemoryBody,
   UpdateSettingsBody,
 } from "./api.schemas";
@@ -937,4 +945,920 @@ export const useUpdateSettings = <
   TContext
 > => {
   return useMutation(getUpdateSettingsMutationOptions(options));
+};
+
+/**
+ * @summary List all bucket list items
+ */
+export const getListBucketListUrl = () => {
+  return `/api/bucket-list`;
+};
+
+export const listBucketList = async (
+  options?: RequestInit,
+): Promise<BucketListItem[]> => {
+  return customFetch<BucketListItem[]>(getListBucketListUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListBucketListQueryKey = () => {
+  return [`/api/bucket-list`] as const;
+};
+
+export const getListBucketListQueryOptions = <
+  TData = Awaited<ReturnType<typeof listBucketList>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listBucketList>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListBucketListQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listBucketList>>> = ({
+    signal,
+  }) => listBucketList({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listBucketList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListBucketListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listBucketList>>
+>;
+export type ListBucketListQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all bucket list items
+ */
+
+export function useListBucketList<
+  TData = Awaited<ReturnType<typeof listBucketList>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listBucketList>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListBucketListQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Add a bucket list item (owner only)
+ */
+export const getCreateBucketListItemUrl = () => {
+  return `/api/bucket-list`;
+};
+
+export const createBucketListItem = async (
+  createBucketListBody: CreateBucketListBody,
+  options?: RequestInit,
+): Promise<BucketListItem> => {
+  return customFetch<BucketListItem>(getCreateBucketListItemUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createBucketListBody),
+  });
+};
+
+export const getCreateBucketListItemMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBucketListItem>>,
+    TError,
+    { data: BodyType<CreateBucketListBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createBucketListItem>>,
+  TError,
+  { data: BodyType<CreateBucketListBody> },
+  TContext
+> => {
+  const mutationKey = ["createBucketListItem"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createBucketListItem>>,
+    { data: BodyType<CreateBucketListBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createBucketListItem(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateBucketListItemMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createBucketListItem>>
+>;
+export type CreateBucketListItemMutationBody = BodyType<CreateBucketListBody>;
+export type CreateBucketListItemMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Add a bucket list item (owner only)
+ */
+export const useCreateBucketListItem = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBucketListItem>>,
+    TError,
+    { data: BodyType<CreateBucketListBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createBucketListItem>>,
+  TError,
+  { data: BodyType<CreateBucketListBody> },
+  TContext
+> => {
+  return useMutation(getCreateBucketListItemMutationOptions(options));
+};
+
+/**
+ * @summary Toggle or update a bucket list item (owner only)
+ */
+export const getUpdateBucketListItemUrl = (id: number) => {
+  return `/api/bucket-list/${id}`;
+};
+
+export const updateBucketListItem = async (
+  id: number,
+  updateBucketListBody: UpdateBucketListBody,
+  options?: RequestInit,
+): Promise<BucketListItem> => {
+  return customFetch<BucketListItem>(getUpdateBucketListItemUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateBucketListBody),
+  });
+};
+
+export const getUpdateBucketListItemMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBucketListItem>>,
+    TError,
+    { id: number; data: BodyType<UpdateBucketListBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateBucketListItem>>,
+  TError,
+  { id: number; data: BodyType<UpdateBucketListBody> },
+  TContext
+> => {
+  const mutationKey = ["updateBucketListItem"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateBucketListItem>>,
+    { id: number; data: BodyType<UpdateBucketListBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return updateBucketListItem(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateBucketListItemMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateBucketListItem>>
+>;
+export type UpdateBucketListItemMutationBody = BodyType<UpdateBucketListBody>;
+export type UpdateBucketListItemMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Toggle or update a bucket list item (owner only)
+ */
+export const useUpdateBucketListItem = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBucketListItem>>,
+    TError,
+    { id: number; data: BodyType<UpdateBucketListBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateBucketListItem>>,
+  TError,
+  { id: number; data: BodyType<UpdateBucketListBody> },
+  TContext
+> => {
+  return useMutation(getUpdateBucketListItemMutationOptions(options));
+};
+
+/**
+ * @summary Delete a bucket list item (owner only)
+ */
+export const getDeleteBucketListItemUrl = (id: number) => {
+  return `/api/bucket-list/${id}`;
+};
+
+export const deleteBucketListItem = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteBucketListItemUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteBucketListItemMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteBucketListItem>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteBucketListItem>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteBucketListItem"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteBucketListItem>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteBucketListItem(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteBucketListItemMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteBucketListItem>>
+>;
+
+export type DeleteBucketListItemMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Delete a bucket list item (owner only)
+ */
+export const useDeleteBucketListItem = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteBucketListItem>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteBucketListItem>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteBucketListItemMutationOptions(options));
+};
+
+/**
+ * @summary List all songs
+ */
+export const getListSongsUrl = () => {
+  return `/api/songs`;
+};
+
+export const listSongs = async (options?: RequestInit): Promise<Song[]> => {
+  return customFetch<Song[]>(getListSongsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListSongsQueryKey = () => {
+  return [`/api/songs`] as const;
+};
+
+export const getListSongsQueryOptions = <
+  TData = Awaited<ReturnType<typeof listSongs>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof listSongs>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListSongsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listSongs>>> = ({
+    signal,
+  }) => listSongs({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listSongs>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListSongsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listSongs>>
+>;
+export type ListSongsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all songs
+ */
+
+export function useListSongs<
+  TData = Awaited<ReturnType<typeof listSongs>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof listSongs>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListSongsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Add a song (owner only)
+ */
+export const getCreateSongUrl = () => {
+  return `/api/songs`;
+};
+
+export const createSong = async (
+  createSongBody: CreateSongBody,
+  options?: RequestInit,
+): Promise<Song> => {
+  const formData = new FormData();
+  formData.append(`title`, createSongBody.title);
+  if (createSongBody.artist !== undefined) {
+    formData.append(`artist`, createSongBody.artist);
+  }
+  if (createSongBody.person !== undefined) {
+    formData.append(`person`, createSongBody.person);
+  }
+  if (createSongBody.audio !== undefined) {
+    formData.append(`audio`, createSongBody.audio);
+  }
+
+  return customFetch<Song>(getCreateSongUrl(), {
+    ...options,
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const getCreateSongMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createSong>>,
+    TError,
+    { data: BodyType<CreateSongBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createSong>>,
+  TError,
+  { data: BodyType<CreateSongBody> },
+  TContext
+> => {
+  const mutationKey = ["createSong"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createSong>>,
+    { data: BodyType<CreateSongBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createSong(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateSongMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createSong>>
+>;
+export type CreateSongMutationBody = BodyType<CreateSongBody>;
+export type CreateSongMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Add a song (owner only)
+ */
+export const useCreateSong = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createSong>>,
+    TError,
+    { data: BodyType<CreateSongBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createSong>>,
+  TError,
+  { data: BodyType<CreateSongBody> },
+  TContext
+> => {
+  return useMutation(getCreateSongMutationOptions(options));
+};
+
+/**
+ * @summary Delete a song (owner only)
+ */
+export const getDeleteSongUrl = (id: number) => {
+  return `/api/songs/${id}`;
+};
+
+export const deleteSong = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteSongUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteSongMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteSong>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteSong>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteSong"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteSong>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteSong(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteSongMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteSong>>
+>;
+
+export type DeleteSongMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Delete a song (owner only)
+ */
+export const useDeleteSong = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteSong>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteSong>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteSongMutationOptions(options));
+};
+
+/**
+ * @summary List all diary entries
+ */
+export const getListDiaryUrl = () => {
+  return `/api/diary`;
+};
+
+export const listDiary = async (
+  options?: RequestInit,
+): Promise<DiaryEntry[]> => {
+  return customFetch<DiaryEntry[]>(getListDiaryUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListDiaryQueryKey = () => {
+  return [`/api/diary`] as const;
+};
+
+export const getListDiaryQueryOptions = <
+  TData = Awaited<ReturnType<typeof listDiary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof listDiary>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListDiaryQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listDiary>>> = ({
+    signal,
+  }) => listDiary({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listDiary>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListDiaryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listDiary>>
+>;
+export type ListDiaryQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all diary entries
+ */
+
+export function useListDiary<
+  TData = Awaited<ReturnType<typeof listDiary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof listDiary>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListDiaryQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Add a diary entry (owner only)
+ */
+export const getCreateDiaryEntryUrl = () => {
+  return `/api/diary`;
+};
+
+export const createDiaryEntry = async (
+  createDiaryBody: CreateDiaryBody,
+  options?: RequestInit,
+): Promise<DiaryEntry> => {
+  const formData = new FormData();
+  if (createDiaryBody.content !== undefined) {
+    formData.append(`content`, createDiaryBody.content);
+  }
+  if (createDiaryBody.image !== undefined) {
+    formData.append(`image`, createDiaryBody.image);
+  }
+
+  return customFetch<DiaryEntry>(getCreateDiaryEntryUrl(), {
+    ...options,
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const getCreateDiaryEntryMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createDiaryEntry>>,
+    TError,
+    { data: BodyType<CreateDiaryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createDiaryEntry>>,
+  TError,
+  { data: BodyType<CreateDiaryBody> },
+  TContext
+> => {
+  const mutationKey = ["createDiaryEntry"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createDiaryEntry>>,
+    { data: BodyType<CreateDiaryBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createDiaryEntry(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateDiaryEntryMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createDiaryEntry>>
+>;
+export type CreateDiaryEntryMutationBody = BodyType<CreateDiaryBody>;
+export type CreateDiaryEntryMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Add a diary entry (owner only)
+ */
+export const useCreateDiaryEntry = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createDiaryEntry>>,
+    TError,
+    { data: BodyType<CreateDiaryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createDiaryEntry>>,
+  TError,
+  { data: BodyType<CreateDiaryBody> },
+  TContext
+> => {
+  return useMutation(getCreateDiaryEntryMutationOptions(options));
+};
+
+/**
+ * @summary Update a diary entry (owner only)
+ */
+export const getUpdateDiaryEntryUrl = (id: number) => {
+  return `/api/diary/${id}`;
+};
+
+export const updateDiaryEntry = async (
+  id: number,
+  updateDiaryBody: UpdateDiaryBody,
+  options?: RequestInit,
+): Promise<DiaryEntry> => {
+  const formData = new FormData();
+  if (updateDiaryBody.content !== undefined) {
+    formData.append(`content`, updateDiaryBody.content);
+  }
+  if (updateDiaryBody.image !== undefined) {
+    formData.append(`image`, updateDiaryBody.image);
+  }
+
+  return customFetch<DiaryEntry>(getUpdateDiaryEntryUrl(id), {
+    ...options,
+    method: "PATCH",
+    body: formData,
+  });
+};
+
+export const getUpdateDiaryEntryMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDiaryEntry>>,
+    TError,
+    { id: number; data: BodyType<UpdateDiaryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateDiaryEntry>>,
+  TError,
+  { id: number; data: BodyType<UpdateDiaryBody> },
+  TContext
+> => {
+  const mutationKey = ["updateDiaryEntry"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateDiaryEntry>>,
+    { id: number; data: BodyType<UpdateDiaryBody> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return updateDiaryEntry(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateDiaryEntryMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateDiaryEntry>>
+>;
+export type UpdateDiaryEntryMutationBody = BodyType<UpdateDiaryBody>;
+export type UpdateDiaryEntryMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Update a diary entry (owner only)
+ */
+export const useUpdateDiaryEntry = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDiaryEntry>>,
+    TError,
+    { id: number; data: BodyType<UpdateDiaryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateDiaryEntry>>,
+  TError,
+  { id: number; data: BodyType<UpdateDiaryBody> },
+  TContext
+> => {
+  return useMutation(getUpdateDiaryEntryMutationOptions(options));
+};
+
+/**
+ * @summary Delete a diary entry (owner only)
+ */
+export const getDeleteDiaryEntryUrl = (id: number) => {
+  return `/api/diary/${id}`;
+};
+
+export const deleteDiaryEntry = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteDiaryEntryUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteDiaryEntryMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteDiaryEntry>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteDiaryEntry>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteDiaryEntry"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteDiaryEntry>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteDiaryEntry(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteDiaryEntryMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteDiaryEntry>>
+>;
+
+export type DeleteDiaryEntryMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Delete a diary entry (owner only)
+ */
+export const useDeleteDiaryEntry = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteDiaryEntry>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteDiaryEntry>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteDiaryEntryMutationOptions(options));
 };

@@ -16,6 +16,12 @@ tags:
     description: Memory/photo management
   - name: settings
     description: Site settings
+  - name: bucket-list
+    description: Bucket list / our dreams
+  - name: songs
+    description: Our songs playlist
+  - name: diary
+    description: Diary entries
 paths:
   /healthz:
     get:
@@ -256,6 +262,265 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /bucket-list:
+    get:
+      operationId: listBucketList
+      tags: [bucket-list]
+      summary: List all bucket list items
+      responses:
+        "200":
+          description: List of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BucketListItem"
+    post:
+      operationId: createBucketListItem
+      tags: [bucket-list]
+      summary: Add a bucket list item (owner only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBucketListBody"
+      responses:
+        "201":
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BucketListItem"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /bucket-list/{id}:
+    patch:
+      operationId: updateBucketListItem
+      tags: [bucket-list]
+      summary: Toggle or update a bucket list item (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBucketListBody"
+      responses:
+        "200":
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BucketListItem"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteBucketListItem
+      tags: [bucket-list]
+      summary: Delete a bucket list item (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /songs:
+    get:
+      operationId: listSongs
+      tags: [songs]
+      summary: List all songs
+      responses:
+        "200":
+          description: List of songs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+    post:
+      operationId: createSong
+      tags: [songs]
+      summary: Add a song (owner only)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateSongBody"
+      responses:
+        "201":
+          description: Song added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Song"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /songs/{id}:
+    delete:
+      operationId: deleteSong
+      tags: [songs]
+      summary: Delete a song (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /diary:
+    get:
+      operationId: listDiary
+      tags: [diary]
+      summary: List all diary entries
+      responses:
+        "200":
+          description: List of diary entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DiaryEntry"
+    post:
+      operationId: createDiaryEntry
+      tags: [diary]
+      summary: Add a diary entry (owner only)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateDiaryBody"
+      responses:
+        "201":
+          description: Entry created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiaryEntry"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /diary/{id}:
+    patch:
+      operationId: updateDiaryEntry
+      tags: [diary]
+      summary: Update a diary entry (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UpdateDiaryBody"
+      responses:
+        "200":
+          description: Entry updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiaryEntry"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteDiaryEntry
+      tags: [diary]
+      summary: Delete a diary entry (owner only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -409,3 +674,112 @@ components:
           type: ["string", "null"]
         person2Birthday:
           type: ["string", "null"]
+
+    BucketListItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        completed:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - text
+        - completed
+        - createdAt
+
+    CreateBucketListBody:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
+
+    UpdateBucketListBody:
+      type: object
+      properties:
+        text:
+          type: string
+        completed:
+          type: boolean
+
+    Song:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        artist:
+          type: string
+        audioUrl:
+          type: ["string", "null"]
+        person:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - artist
+        - audioUrl
+        - person
+        - createdAt
+
+    CreateSongBody:
+      type: object
+      properties:
+        title:
+          type: string
+        artist:
+          type: string
+        person:
+          type: string
+        audio:
+          type: string
+          format: binary
+      required:
+        - title
+
+    DiaryEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - content
+        - imageUrl
+        - createdAt
+        - updatedAt
+
+    CreateDiaryBody:
+      type: object
+      properties:
+        content:
+          type: string
+        image:
+          type: string
+          format: binary
+
+    UpdateDiaryBody:
+      type: object
+      properties:
+        content:
+          type: string
+        image:
+          type: string
+          format: binary

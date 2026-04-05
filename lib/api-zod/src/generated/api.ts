@@ -159,3 +159,124 @@ export const UpdateSettingsResponse = zod.object({
   person2Birthday: zod.string().nullable(),
   updatedAt: zod.string(),
 });
+
+/**
+ * @summary List all bucket list items
+ */
+export const ListBucketListResponseItem = zod.object({
+  id: zod.number(),
+  text: zod.string(),
+  completed: zod.boolean(),
+  createdAt: zod.string(),
+});
+export const ListBucketListResponse = zod.array(ListBucketListResponseItem);
+
+/**
+ * @summary Add a bucket list item (owner only)
+ */
+export const CreateBucketListItemBody = zod.object({
+  text: zod.string(),
+});
+
+/**
+ * @summary Toggle or update a bucket list item (owner only)
+ */
+export const UpdateBucketListItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateBucketListItemBody = zod.object({
+  text: zod.string().optional(),
+  completed: zod.boolean().optional(),
+});
+
+export const UpdateBucketListItemResponse = zod.object({
+  id: zod.number(),
+  text: zod.string(),
+  completed: zod.boolean(),
+  createdAt: zod.string(),
+});
+
+/**
+ * @summary Delete a bucket list item (owner only)
+ */
+export const DeleteBucketListItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all songs
+ */
+export const ListSongsResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  artist: zod.string(),
+  audioUrl: zod.string().nullable(),
+  person: zod.string(),
+  createdAt: zod.string(),
+});
+export const ListSongsResponse = zod.array(ListSongsResponseItem);
+
+/**
+ * @summary Add a song (owner only)
+ */
+export const CreateSongBody = zod.object({
+  title: zod.string(),
+  artist: zod.string().optional(),
+  person: zod.string().optional(),
+  audio: zod.instanceof(File).optional(),
+});
+
+/**
+ * @summary Delete a song (owner only)
+ */
+export const DeleteSongParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all diary entries
+ */
+export const ListDiaryResponseItem = zod.object({
+  id: zod.number(),
+  content: zod.string(),
+  imageUrl: zod.string().nullable(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListDiaryResponse = zod.array(ListDiaryResponseItem);
+
+/**
+ * @summary Add a diary entry (owner only)
+ */
+export const CreateDiaryEntryBody = zod.object({
+  content: zod.string().optional(),
+  image: zod.instanceof(File).optional(),
+});
+
+/**
+ * @summary Update a diary entry (owner only)
+ */
+export const UpdateDiaryEntryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateDiaryEntryBody = zod.object({
+  content: zod.string().optional(),
+  image: zod.instanceof(File).optional(),
+});
+
+export const UpdateDiaryEntryResponse = zod.object({
+  id: zod.number(),
+  content: zod.string(),
+  imageUrl: zod.string().nullable(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete a diary entry (owner only)
+ */
+export const DeleteDiaryEntryParams = zod.object({
+  id: zod.coerce.number(),
+});

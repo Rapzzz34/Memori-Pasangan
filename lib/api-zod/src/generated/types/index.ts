@@ -6,7 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./bucketListItem";
+export * from "./createBucketListBody";
+export * from "./createDiaryBody";
 export * from "./createMemoryBody";
+export * from "./createSongBody";
+export * from "./diaryEntry";
 export * from "./errorResponse";
 export * from "./healthStatus";
 export * from "./loginBody";
@@ -15,5 +20,8 @@ export * from "./memory";
 export * from "./meResponse";
 export * from "./messageResponse";
 export * from "./siteSettings";
+export * from "./song";
+export * from "./updateBucketListBody";
+export * from "./updateDiaryBody";
 export * from "./updateMemoryBody";
 export * from "./updateSettingsBody";
