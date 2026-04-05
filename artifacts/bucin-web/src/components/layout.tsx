@@ -16,7 +16,8 @@ export function Layout({ children, hideNav }: { children: ReactNode; hideNav?: b
         <div className="fixed-within-phone absolute top-3 right-3 z-50">
           <Link
             href="/owner"
-            className="text-[9px] uppercase tracking-widest text-white/20 hover:text-primary transition-colors px-2 py-1"
+            className="text-[9px] uppercase tracking-widest transition-colors px-2 py-1"
+            style={{ color: "rgba(80,20,80,0.25)" }}
           >
             {isOwner ? "Panel" : "Owner"}
           </Link>

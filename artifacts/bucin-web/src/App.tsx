@@ -33,20 +33,50 @@ function App() {
       <TooltipProvider>
         <AudioProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            {/* Outer: dark bg fills screen on desktop */}
+            {/* Outer: soft pink-white gradient fills screen */}
             <div
-              className="w-full min-h-screen flex items-start justify-center"
-              style={{ background: "hsl(222,50%,4%)" }}
+              className="w-full min-h-screen flex items-start justify-center relative overflow-hidden"
+              style={{ background: "linear-gradient(145deg, #fff0f8 0%, #fce8ff 40%, #ffe8f5 70%, #f8f0ff 100%)" }}
             >
-              {/* Phone frame: 430px max, full height */}
+              {/* Floating neon blobs */}
+              <div className="pointer-events-none fixed inset-0 overflow-hidden">
+                <div style={{
+                  position: "absolute", width: 340, height: 340,
+                  top: "5%", left: "-8%",
+                  background: "radial-gradient(circle, rgba(255,20,147,0.18) 0%, transparent 70%)",
+                  filter: "blur(60px)", borderRadius: "50%",
+                }} />
+                <div style={{
+                  position: "absolute", width: 280, height: 280,
+                  top: "30%", right: "-5%",
+                  background: "radial-gradient(circle, rgba(220,80,255,0.14) 0%, transparent 70%)",
+                  filter: "blur(50px)", borderRadius: "50%",
+                }} />
+                <div style={{
+                  position: "absolute", width: 320, height: 320,
+                  bottom: "10%", left: "5%",
+                  background: "radial-gradient(circle, rgba(255,80,160,0.13) 0%, transparent 70%)",
+                  filter: "blur(55px)", borderRadius: "50%",
+                }} />
+                <div style={{
+                  position: "absolute", width: 200, height: 200,
+                  top: "60%", right: "10%",
+                  background: "radial-gradient(circle, rgba(255,150,200,0.12) 0%, transparent 70%)",
+                  filter: "blur(40px)", borderRadius: "50%",
+                }} />
+              </div>
+
+              {/* Phone frame */}
               <div
                 className="relative flex flex-col w-full"
                 style={{
                   maxWidth: 430,
                   minHeight: "100dvh",
                   height: "100dvh",
-                  background: "hsl(222,47%,6%)",
-                  boxShadow: "0 0 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)",
+                  background: "rgba(255,255,255,0.55)",
+                  backdropFilter: "blur(60px)",
+                  WebkitBackdropFilter: "blur(60px)",
+                  boxShadow: "0 0 0 1px rgba(255,180,220,0.35), 0 20px 80px rgba(255,20,147,0.10), 0 0 120px rgba(255,100,200,0.06)",
                 }}
               >
                 <Router />

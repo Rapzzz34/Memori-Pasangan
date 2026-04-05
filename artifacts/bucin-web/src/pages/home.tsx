@@ -20,10 +20,15 @@ function getTimeTogether(loveDateStr: string | null | undefined) {
 function TimeBlock({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center min-w-[3.5rem]">
-      <div className="text-3xl md:text-5xl font-bold text-white tabular-nums leading-none">
+      <div
+        className="text-3xl md:text-5xl font-bold tabular-nums leading-none"
+        style={{ color: "hsl(280,60%,10%)" }}
+      >
         {String(value).padStart(2, "0")}
       </div>
-      <div className="text-[9px] text-white/35 uppercase tracking-widest mt-1.5">{label}</div>
+      <div className="text-[9px] uppercase tracking-widest mt-1.5" style={{ color: "rgba(80,20,80,0.38)" }}>
+        {label}
+      </div>
     </div>
   );
 }
@@ -44,37 +49,29 @@ export default function Home() {
     <Layout>
       <section
         className="min-h-full flex flex-col items-center justify-center text-center px-6 relative overflow-hidden"
-        style={{ minHeight: "calc(100dvh - 120px)", background: "linear-gradient(160deg, hsl(222,55%,9%) 0%, hsl(240,40%,8%) 50%, hsl(222,47%,6%) 100%)" }}
+        style={{ minHeight: "calc(100dvh - 120px)" }}
       >
-        {/* Stars */}
-        {[...Array(24)].map((_, i) => (
+        {/* Bokeh orbs */}
+        {[
+          { w: 180, h: 180, top: "8%", left: "10%", color: "rgba(255,20,147,0.15)", blur: 40, dur: 7 },
+          { w: 120, h: 120, top: "20%", right: "8%", color: "rgba(200,50,255,0.12)", blur: 30, dur: 9 },
+          { w: 150, h: 150, top: "55%", left: "5%", color: "rgba(255,80,180,0.12)", blur: 35, dur: 8 },
+          { w: 100, h: 100, top: "70%", right: "12%", color: "rgba(255,120,200,0.14)", blur: 25, dur: 6 },
+          { w: 80, h: 80, top: "40%", left: "50%", color: "rgba(255,20,147,0.08)", blur: 20, dur: 10 },
+        ].map((orb, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-white pointer-events-none"
+            className="absolute rounded-full pointer-events-none"
             style={{
-              width: Math.random() * 2 + 1,
-              height: Math.random() * 2 + 1,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 85}%`,
+              width: orb.w, height: orb.h,
+              top: orb.top, left: (orb as any).left, right: (orb as any).right,
+              background: `radial-gradient(circle, ${orb.color} 0%, transparent 70%)`,
+              filter: `blur(${orb.blur}px)`,
             }}
-            animate={{ opacity: [0.05, Math.random() * 0.4 + 0.1, 0.05] }}
-            transition={{ duration: 3 + Math.random() * 4, repeat: Infinity, delay: Math.random() * 5 }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: orb.dur, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
           />
         ))}
-
-        {/* Glow */}
-        <div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 500,
-            height: 500,
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -55%)",
-            background: "radial-gradient(circle, hsla(330,85%,55%,0.1) 0%, transparent 70%)",
-            filter: "blur(50px)",
-          }}
-        />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -87,20 +84,31 @@ export default function Home() {
             animate={{ scale: [1, 1.08, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center justify-center w-16 h-16 rounded-full mx-auto"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+            style={{
+              background: "rgba(255,255,255,0.80)",
+              border: "1.5px solid rgba(255,150,200,0.5)",
+              boxShadow: "0 8px 32px rgba(255,20,147,0.18), 0 0 0 6px rgba(255,20,147,0.06)",
+              backdropFilter: "blur(10px)",
+            }}
           >
-            <Heart className="w-8 h-8 fill-current" style={{ color: "hsl(330,85%,65%)" }} />
+            <Heart
+              className="w-8 h-8 fill-current"
+              style={{
+                color: "hsl(330,100%,55%)",
+                filter: "drop-shadow(0 0 8px rgba(255,20,147,0.6))",
+              }}
+            />
           </motion.div>
 
           {/* Names */}
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-6xl font-serif text-white leading-tight">
+            <h1 className="text-4xl md:text-6xl font-serif leading-tight" style={{ color: "hsl(280,60%,10%)" }}>
               {settings?.person1Name || "Kamu"}
-              <span className="mx-3 font-light text-white/30 text-3xl"> & </span>
+              <span className="mx-3 font-light text-3xl" style={{ color: "rgba(255,20,147,0.35)" }}> & </span>
               {settings?.person2Name || "Dia"}
             </h1>
             {settings?.loveDate && (
-              <p className="text-white/30 text-[11px] uppercase tracking-[0.3em]">
+              <p className="text-[11px] uppercase tracking-[0.3em]" style={{ color: "rgba(80,20,80,0.38)" }}>
                 Bersama sejak {formatDate(settings.loveDate)}
               </p>
             )}
@@ -110,15 +118,21 @@ export default function Home() {
           {settings?.loveDate && (
             <div className="flex justify-center w-full">
               <div
-                className="flex items-center gap-3 rounded-2xl px-6 py-5 border border-white/8"
-                style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(10px)" }}
+                className="flex items-center gap-3 rounded-2xl px-6 py-5"
+                style={{
+                  background: "rgba(255,255,255,0.75)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255,180,220,0.45)",
+                  boxShadow: "0 8px 32px rgba(255,20,147,0.10)",
+                }}
               >
                 <TimeBlock value={time.days} label="hari" />
-                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <span className="text-2xl font-extralight mb-3" style={{ color: "rgba(255,20,147,0.25)" }}>:</span>
                 <TimeBlock value={time.hours} label="jam" />
-                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <span className="text-2xl font-extralight mb-3" style={{ color: "rgba(255,20,147,0.25)" }}>:</span>
                 <TimeBlock value={time.minutes} label="menit" />
-                <span className="text-white/15 text-2xl font-extralight mb-3">:</span>
+                <span className="text-2xl font-extralight mb-3" style={{ color: "rgba(255,20,147,0.25)" }}>:</span>
                 <TimeBlock value={time.seconds} label="detik" />
               </div>
             </div>
@@ -126,14 +140,14 @@ export default function Home() {
 
           {/* Total days */}
           {settings?.loveDate && (
-            <p className="text-white/25 text-xs font-serif italic">
+            <p className="text-xs font-serif italic" style={{ color: "rgba(80,20,80,0.38)" }}>
               {totalDays} hari penuh cinta
             </p>
           )}
 
           {/* Love message */}
           {settings?.loveMessage && (
-            <p className="text-white/40 font-serif italic text-sm leading-relaxed max-w-xs mx-auto">
+            <p className="font-serif italic text-sm leading-relaxed max-w-xs mx-auto" style={{ color: "rgba(80,20,80,0.55)" }}>
               "{settings.loveMessage}"
             </p>
           )}

@@ -17,12 +17,19 @@ function SongCard({ song }: { song: Song }) {
       initial={{ opacity: 0, scale: 0.92 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className={`rounded-2xl border overflow-hidden transition-transform ${hasAudio ? "cursor-pointer active:scale-95" : "cursor-default opacity-50"}`}
+      className={`rounded-2xl overflow-hidden transition-transform ${hasAudio ? "cursor-pointer active:scale-95" : "cursor-default opacity-40"}`}
       style={{
         background: isThisSong
-          ? "linear-gradient(145deg, rgba(180,40,100,0.18), rgba(130,20,80,0.10))"
-          : "rgba(255,255,255,0.04)",
-        borderColor: isThisSong ? "rgba(330,85%,58%,0.3)" : "rgba(255,255,255,0.07)",
+          ? "rgba(255,20,147,0.10)"
+          : "rgba(255,255,255,0.72)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: isThisSong
+          ? "1.5px solid rgba(255,20,147,0.30)"
+          : "1px solid rgba(255,180,220,0.35)",
+        boxShadow: isThisSong
+          ? "0 4px 20px rgba(255,20,147,0.18)"
+          : "0 2px 12px rgba(255,20,147,0.06)",
       }}
       onClick={() => hasAudio && toggle({ id: song.id, title: song.title, artist: song.artist, audioUrl: song.audioUrl })}
     >
@@ -31,18 +38,20 @@ function SongCard({ song }: { song: Song }) {
         className="relative aspect-square flex flex-col items-center justify-center gap-2"
         style={{
           background: isThisSong
-            ? "linear-gradient(160deg, hsl(330,60%,18%), hsl(320,50%,12%))"
-            : "rgba(255,255,255,0.03)",
+            ? "linear-gradient(160deg, rgba(255,20,147,0.14), rgba(200,50,255,0.08))"
+            : "rgba(255,240,248,0.60)",
         }}
       >
-        {/* Animated bars when playing */}
         {isThisPlaying ? (
           <div className="flex items-end gap-1 h-8">
             {[...Array(4)].map((_, i) => (
               <motion.div
                 key={i}
                 className="w-1 rounded-full"
-                style={{ background: "hsl(330,85%,65%)" }}
+                style={{
+                  background: "hsl(330,100%,55%)",
+                  boxShadow: "0 0 6px rgba(255,20,147,0.7)",
+                }}
                 animate={{ height: ["8px", "28px", "6px", "20px", "8px"] }}
                 transition={{ duration: 0.7 + i * 0.1, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
               />
@@ -51,7 +60,10 @@ function SongCard({ song }: { song: Song }) {
         ) : (
           <Music2
             className="w-8 h-8"
-            style={{ color: isThisSong ? "hsl(330,85%,65%)" : "rgba(255,255,255,0.12)" }}
+            style={{
+              color: isThisSong ? "hsl(330,100%,55%)" : "rgba(255,20,147,0.22)",
+              filter: isThisSong ? "drop-shadow(0 0 6px rgba(255,20,147,0.5))" : "none",
+            }}
           />
         )}
 
@@ -59,7 +71,10 @@ function SongCard({ song }: { song: Song }) {
         {hasAudio && (
           <div
             className="absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
-            style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
+            style={{
+              background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
+              boxShadow: "0 4px 12px rgba(255,20,147,0.45)",
+            }}
           >
             {isThisPlaying
               ? <Pause className="w-3.5 h-3.5 text-white fill-white" />
@@ -67,22 +82,18 @@ function SongCard({ song }: { song: Song }) {
             }
           </div>
         )}
-
-        {!hasAudio && (
-          <span className="text-[9px] text-white/20 absolute bottom-1.5 right-2">no audio</span>
-        )}
       </div>
 
       {/* Info */}
       <div className="px-2.5 py-2 text-center">
         <p
           className="text-xs font-medium truncate leading-tight"
-          style={{ color: isThisSong ? "hsl(330,80%,75%)" : "rgba(255,255,255,0.8)" }}
+          style={{ color: isThisSong ? "hsl(330,100%,45%)" : "hsl(280,60%,10%)" }}
         >
           {song.title || "Tanpa judul"}
         </p>
         {song.artist && (
-          <p className="text-[10px] truncate mt-0.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+          <p className="text-[10px] truncate mt-0.5" style={{ color: "rgba(80,20,80,0.38)" }}>
             {song.artist}
           </p>
         )}
@@ -106,10 +117,12 @@ export default function Lagu() {
       <div className="min-h-[100dvh] px-4 pt-8 pb-4">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center gap-2 mb-1">
-            <Music2 className="w-4 h-4 text-primary/60" />
-            <h1 className="text-sm font-bold uppercase tracking-[0.25em] text-white/50">Lagu Kita</h1>
+            <Music2 className="w-4 h-4" style={{ color: "hsl(330,100%,55%)" }} />
+            <h1 className="text-sm font-bold uppercase tracking-[0.25em]" style={{ color: "rgba(80,20,80,0.50)" }}>
+              Lagu Kita
+            </h1>
           </div>
-          <p className="text-white/25 text-xs">{songs.length} lagu</p>
+          <p className="text-xs" style={{ color: "rgba(80,20,80,0.30)" }}>{songs.length} lagu</p>
         </motion.div>
 
         {isLoading ? (
@@ -118,17 +131,17 @@ export default function Lagu() {
           </div>
         ) : songs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-60 gap-3">
-            <Heart className="w-10 h-10 text-primary/20 fill-primary/5" />
-            <p className="text-white/20 text-sm font-serif italic">Belum ada lagu yang ditambahkan</p>
+            <Heart className="w-10 h-10" style={{ color: "rgba(255,20,147,0.25)", fill: "rgba(255,20,147,0.08)" }} />
+            <p className="text-sm font-serif italic" style={{ color: "rgba(80,20,80,0.28)" }}>
+              Belum ada lagu yang ditambahkan
+            </p>
           </div>
         ) : (
           <div className="space-y-8">
             {person1Songs.length > 0 && (
               <div>
-                <p
-                  className="text-[10px] uppercase tracking-[0.2em] mb-4 font-medium"
-                  style={{ color: "hsl(330,85%,65%)" }}
-                >
+                <p className="text-[10px] uppercase tracking-[0.2em] mb-4 font-semibold"
+                   style={{ color: "hsl(330,100%,55%)" }}>
                   Playlist {name1}
                 </p>
                 <div className="grid grid-cols-3 gap-3">
@@ -138,10 +151,8 @@ export default function Lagu() {
             )}
             {person2Songs.length > 0 && (
               <div>
-                <p
-                  className="text-[10px] uppercase tracking-[0.2em] mb-4 font-medium"
-                  style={{ color: "hsl(330,85%,65%)" }}
-                >
+                <p className="text-[10px] uppercase tracking-[0.2em] mb-4 font-semibold"
+                   style={{ color: "hsl(330,100%,55%)" }}>
                   Playlist {name2}
                 </p>
                 <div className="grid grid-cols-3 gap-3">

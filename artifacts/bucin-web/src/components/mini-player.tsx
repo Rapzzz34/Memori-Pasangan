@@ -14,13 +14,19 @@ export function MiniPlayer() {
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ type: "spring", stiffness: 280, damping: 28 }}
-          className="shrink-0 overflow-hidden border-t border-white/6"
-          style={{ background: "rgba(15,8,25,0.97)" }}
+          className="shrink-0 overflow-hidden"
+          style={{
+            background: "rgba(255,255,255,0.88)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            borderTop: "1px solid rgba(255,150,200,0.25)",
+            boxShadow: "0 -4px 20px rgba(255,20,147,0.07)",
+          }}
         >
           {/* Seekable progress bar */}
           <div
             className="h-0.5 w-full cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.07)" }}
+            style={{ background: "rgba(255,20,147,0.10)" }}
             onClick={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               seek((e.clientX - rect.left) / rect.width);
@@ -30,8 +36,9 @@ export function MiniPlayer() {
               className="h-full"
               style={{
                 width: `${progress * 100}%`,
-                background: "linear-gradient(90deg, hsl(330,85%,58%), hsl(310,90%,48%))",
+                background: "linear-gradient(90deg, hsl(330,100%,55%), hsl(310,100%,50%))",
                 transition: "width 0.3s linear",
+                boxShadow: "0 0 8px rgba(255,20,147,0.6)",
               }}
             />
           </div>
@@ -40,30 +47,36 @@ export function MiniPlayer() {
             {/* Animated icon */}
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: "linear-gradient(135deg, hsl(330,60%,22%), hsl(320,50%,14%))" }}
+              style={{
+                background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
+                boxShadow: "0 4px 12px rgba(255,20,147,0.35)",
+              }}
             >
               {isPlaying ? (
                 <div className="flex items-end gap-0.5 h-5">
                   {[...Array(3)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="w-0.5 rounded-full"
-                      style={{ background: "hsl(330,85%,65%)" }}
+                      className="w-0.5 rounded-full bg-white"
                       animate={{ height: ["5px", "16px", "4px", "12px", "5px"] }}
                       transition={{ duration: 0.65 + i * 0.12, repeat: Infinity, ease: "easeInOut", delay: i * 0.08 }}
                     />
                   ))}
                 </div>
               ) : (
-                <Music2 className="w-4 h-4" style={{ color: "hsl(330,85%,65%)" }} />
+                <Music2 className="w-4 h-4 text-white" />
               )}
             </div>
 
             {/* Song info */}
             <div className="flex-1 min-w-0">
-              <p className="text-white/90 text-sm font-medium truncate leading-tight">{currentSong.title}</p>
+              <p className="text-sm font-medium truncate leading-tight" style={{ color: "hsl(280,60%,10%)" }}>
+                {currentSong.title}
+              </p>
               {currentSong.artist && (
-                <p className="text-white/35 text-[11px] truncate">{currentSong.artist}</p>
+                <p className="text-[11px] truncate" style={{ color: "rgba(80,20,80,0.45)" }}>
+                  {currentSong.artist}
+                </p>
               )}
             </div>
 
@@ -71,8 +84,11 @@ export function MiniPlayer() {
             <div className="flex items-center gap-1.5 shrink-0">
               <button
                 onClick={isPlaying ? pause : resume}
-                className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-lg"
-                style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
+                className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+                style={{
+                  background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
+                  boxShadow: "0 4px 14px rgba(255,20,147,0.4)",
+                }}
               >
                 {isPlaying
                   ? <Pause className="w-3.5 h-3.5 text-white fill-white" />
@@ -81,7 +97,8 @@ export function MiniPlayer() {
               </button>
               <button
                 onClick={stop}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-white/25 hover:text-white/60 transition-colors"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                style={{ color: "rgba(80,20,80,0.30)" }}
               >
                 <X className="w-3.5 h-3.5" />
               </button>

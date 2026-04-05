@@ -19,6 +19,20 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Plus, Settings, Image as ImageIcon, Trash2, LogOut, Music2, BookOpen, CheckSquare, Check, Pencil } from "lucide-react";
 import type { Memory } from "@workspace/api-client-react";
 
+const G = "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))";
+const cardStyle = {
+  background: "rgba(255,255,255,0.75)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  border: "1px solid rgba(255,180,220,0.35)",
+  boxShadow: "0 2px 16px rgba(255,20,147,0.07)",
+};
+const inputStyle = {
+  background: "rgba(255,255,255,0.80)",
+  borderColor: "rgba(255,150,200,0.35)",
+  color: "hsl(280,60%,10%)",
+};
+
 export default function OwnerPanel() {
   const { isOwner, personId, logout, isLoading: authLoading } = useAuth();
   const { settings } = useSettings();
@@ -36,10 +50,7 @@ export default function OwnerPanel() {
   if (!isOwner) {
     return (
       <Layout>
-        <div
-          className="min-h-[100dvh] flex flex-col items-center justify-center px-4"
-          style={{ background: "linear-gradient(160deg, hsl(222,55%,9%), hsl(240,40%,8%))" }}
-        >
+        <div className="min-h-[100dvh] flex flex-col items-center justify-center px-4">
           <LoginForm />
         </div>
       </Layout>
@@ -51,8 +62,8 @@ export default function OwnerPanel() {
       <div className="min-h-[100dvh] py-8 px-4 max-w-3xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-serif text-white">Owner Panel</h1>
-            <p className="text-white/35 text-xs mt-0.5">
+            <h1 className="text-xl font-serif" style={{ color: "hsl(280,60%,10%)" }}>Owner Panel</h1>
+            <p className="text-xs mt-0.5" style={{ color: "rgba(80,20,80,0.45)" }}>
               {personId === 1
                 ? `Login sebagai ${settings?.person1Name || "Orang Pertama"}`
                 : personId === 2
@@ -65,7 +76,8 @@ export default function OwnerPanel() {
             variant="ghost"
             size="sm"
             onClick={() => logout()}
-            className="text-white/40 hover:text-white text-xs gap-1.5"
+            className="text-xs gap-1.5"
+            style={{ color: "rgba(80,20,80,0.40)" }}
           >
             <LogOut className="w-3.5 h-3.5" />
             Logout
@@ -73,7 +85,14 @@ export default function OwnerPanel() {
         </div>
 
         <Tabs defaultValue="memories" className="w-full">
-          <TabsList className="w-full grid grid-cols-5 h-auto p-1 gap-1 bg-white/5 rounded-xl">
+          <TabsList
+            className="w-full grid grid-cols-5 h-auto p-1 gap-1 rounded-xl"
+            style={{
+              background: "rgba(255,255,255,0.65)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,180,220,0.30)",
+            }}
+          >
             {[
               { value: "memories", icon: <ImageIcon className="w-3.5 h-3.5" />, label: "Foto" },
               { value: "bucket", icon: <CheckSquare className="w-3.5 h-3.5" />, label: "Impian" },
@@ -84,7 +103,8 @@ export default function OwnerPanel() {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="flex flex-col gap-1 py-2 text-[10px] data-[state=active]:bg-white/10 data-[state=active]:text-primary rounded-lg"
+                className="flex flex-col gap-1 py-2 text-[10px] rounded-lg data-[state=active]:shadow-sm"
+                style={{ color: "rgba(80,20,80,0.50)" }}
               >
                 {tab.icon}
                 {tab.label}
@@ -92,17 +112,12 @@ export default function OwnerPanel() {
             ))}
           </TabsList>
 
-          {/* MEMORIES TAB */}
           <TabsContent value="memories" className="mt-6 space-y-4">
             <MemoriesSection />
           </TabsContent>
-
-          {/* BUCKET LIST TAB */}
           <TabsContent value="bucket" className="mt-6 space-y-4">
             <BucketListSection />
           </TabsContent>
-
-          {/* SONGS TAB */}
           <TabsContent value="songs" className="mt-6 space-y-4">
             <SongsSection
               personId={personId}
@@ -110,13 +125,9 @@ export default function OwnerPanel() {
               name2={settings?.person2Name || "Orang Kedua"}
             />
           </TabsContent>
-
-          {/* DIARY TAB */}
           <TabsContent value="diary" className="mt-6 space-y-4">
             <DiarySection />
           </TabsContent>
-
-          {/* SETTINGS TAB */}
           <TabsContent value="settings" className="mt-6">
             <SettingsForm />
           </TabsContent>
@@ -127,47 +138,46 @@ export default function OwnerPanel() {
 }
 
 function MemoriesSection() {
-  const { memories, deleteMemory, isDeleting } = useMemories();
+  const { memories, deleteMemory } = useMemories();
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingMemory, setEditingMemory] = useState<Memory | null>(null);
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <p className="text-white/50 text-xs">{memories.length} kenangan</p>
+        <p className="text-xs" style={{ color: "rgba(80,20,80,0.40)" }}>{memories.length} kenangan</p>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" className="gap-1.5 text-xs h-8 text-white" style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}>
+            <Button size="sm" className="gap-1.5 text-xs h-8 text-white" style={{ background: G }}>
               <Plus className="w-3.5 h-3.5" /> Tambah Foto
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Kenangan Baru</DialogTitle>
-            </DialogHeader>
+            <DialogHeader><DialogTitle>Kenangan Baru</DialogTitle></DialogHeader>
             <MemoryForm onSuccess={() => setIsAddOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>
 
       {memories.length === 0 ? (
-        <EmptyState icon={<ImageIcon className="w-6 h-6 text-white/20" />} label="Belum ada foto" />
+        <EmptyState icon={<ImageIcon className="w-6 h-6" style={{ color: "rgba(255,20,147,0.30)" }} />} label="Belum ada foto" />
       ) : (
         <div className="space-y-3">
           {memories.map(memory => (
-            <div key={memory.id} className="flex items-center gap-3 rounded-xl p-3 border border-white/8" style={{ background: "rgba(255,255,255,0.04)" }}>
-              <img src={memory.imageUrl} alt={memory.title} className="w-14 h-14 object-cover rounded-lg shrink-0" />
+            <div key={memory.id} className="flex items-center gap-3 rounded-2xl p-3" style={cardStyle}>
+              <img src={memory.imageUrl} alt={memory.title} className="w-14 h-14 object-cover rounded-xl shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-white/80 text-sm font-medium truncate">{memory.title}</p>
-                {memory.memoryDate && <p className="text-white/30 text-xs">{formatDate(memory.memoryDate)}</p>}
+                <p className="text-sm font-medium truncate" style={{ color: "hsl(280,60%,10%)" }}>{memory.title}</p>
+                {memory.memoryDate && <p className="text-xs" style={{ color: "rgba(80,20,80,0.38)" }}>{formatDate(memory.memoryDate)}</p>}
               </div>
               <div className="flex gap-1 shrink-0">
-                <Button variant="ghost" size="icon" className="w-7 h-7 text-white/30 hover:text-white" onClick={() => setEditingMemory(memory)}>
+                <Button variant="ghost" size="icon" className="w-7 h-7" style={{ color: "rgba(80,20,80,0.35)" }}
+                  onClick={() => setEditingMemory(memory)}>
                   <Pencil className="w-3.5 h-3.5" />
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="ghost" size="icon" className="w-7 h-7 text-white/30 hover:text-red-400">
+                    <Button variant="ghost" size="icon" className="w-7 h-7" style={{ color: "rgba(80,20,80,0.30)" }}>
                       <Trash2 className="w-3.5 h-3.5" />
                     </Button>
                   </AlertDialogTrigger>
@@ -178,9 +188,7 @@ function MemoriesSection() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Batal</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteMemory({ id: memory.id })} className="bg-destructive text-destructive-foreground">
-                        Hapus
-                      </AlertDialogAction>
+                      <AlertDialogAction onClick={() => deleteMemory({ id: memory.id })} className="bg-destructive text-destructive-foreground">Hapus</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -217,45 +225,39 @@ function BucketListSection() {
           value={newText}
           onChange={e => setNewText(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleAdd()}
-          className="flex-1 text-sm h-9 border-white/15 text-white placeholder:text-white/25"
-          style={{ background: "rgba(255,255,255,0.05)" }}
+          className="flex-1 text-sm h-9 placeholder:text-pink-300"
+          style={inputStyle}
         />
-        <Button
-          size="sm"
-          onClick={handleAdd}
-          disabled={isCreating || !newText.trim()}
-          className="h-9 w-9 p-0 shrink-0 text-white"
-          style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
-        >
+        <Button size="sm" onClick={handleAdd} disabled={isCreating || !newText.trim()}
+          className="h-9 w-9 p-0 shrink-0 text-white" style={{ background: G }}>
           <Plus className="w-4 h-4" />
         </Button>
       </div>
 
       {items.length === 0 ? (
-        <EmptyState icon={<CheckSquare className="w-6 h-6 text-white/20" />} label="Belum ada impian" />
+        <EmptyState icon={<CheckSquare className="w-6 h-6" style={{ color: "rgba(255,20,147,0.30)" }} />} label="Belum ada impian" />
       ) : (
         <div className="space-y-2">
           {items.map(item => (
-            <div key={item.id} className="flex items-center gap-3 rounded-xl px-3 py-3 border border-white/8" style={{ background: "rgba(255,255,255,0.04)" }}>
+            <div key={item.id} className="flex items-center gap-3 rounded-2xl px-3 py-3" style={cardStyle}>
               <button
                 onClick={() => updateItem({ id: item.id, data: { completed: !item.completed } })}
-                className="w-5 h-5 rounded border flex items-center justify-center shrink-0"
+                className="w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all"
                 style={{
-                  background: item.completed ? "hsl(330,85%,58%)" : "transparent",
-                  borderColor: item.completed ? "hsl(330,85%,58%)" : "rgba(255,255,255,0.2)",
+                  background: item.completed ? "hsl(330,100%,55%)" : "transparent",
+                  borderColor: item.completed ? "hsl(330,100%,55%)" : "rgba(255,20,147,0.30)",
+                  boxShadow: item.completed ? "0 0 8px rgba(255,20,147,0.4)" : "none",
                 }}
               >
                 {item.completed && <Check className="w-3 h-3 text-white" />}
               </button>
-              <span className={`flex-1 text-sm ${item.completed ? "line-through text-white/30" : "text-white/75"}`}>
+              <span className={`flex-1 text-sm ${item.completed ? "line-through" : ""}`}
+                style={{ color: item.completed ? "rgba(80,20,80,0.35)" : "hsl(280,60%,10%)" }}>
                 {item.text}
               </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="w-7 h-7 text-white/20 hover:text-red-400 shrink-0"
-                onClick={() => deleteItem({ id: item.id })}
-              >
+              <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
+                style={{ color: "rgba(80,20,80,0.25)" }}
+                onClick={() => deleteItem({ id: item.id })}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
@@ -303,13 +305,15 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-white/8 p-4 space-y-3" style={{ background: "rgba(255,255,255,0.03)" }}>
-        <p className="text-white/40 text-xs uppercase tracking-widest">Tambah Lagu</p>
+      <div className="rounded-2xl p-4 space-y-3" style={cardStyle}>
+        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(80,20,80,0.40)" }}>
+          Tambah Lagu
+        </p>
         <div className="grid grid-cols-2 gap-2">
           <Input placeholder="Judul lagu" value={title} onChange={e => setTitle(e.target.value)}
-            className="text-sm h-9 border-white/15 text-white placeholder:text-white/25" style={{ background: "rgba(255,255,255,0.05)" }} />
+            className="text-sm h-9 placeholder:text-pink-300" style={inputStyle} />
           <Input placeholder="Artis" value={artist} onChange={e => setArtist(e.target.value)}
-            className="text-sm h-9 border-white/15 text-white placeholder:text-white/25" style={{ background: "rgba(255,255,255,0.05)" }} />
+            className="text-sm h-9 placeholder:text-pink-300" style={inputStyle} />
         </div>
         <div className="flex gap-2">
           {(["both", "person1", "person2"] as const).map(p => (
@@ -318,9 +322,10 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
               onClick={() => setPerson(p)}
               className="text-xs px-3 py-1.5 rounded-lg border transition-colors"
               style={{
-                background: person === p ? "hsl(330,85%,58%)" : "rgba(255,255,255,0.04)",
-                borderColor: person === p ? "hsl(330,85%,58%)" : "rgba(255,255,255,0.12)",
-                color: person === p ? "white" : "rgba(255,255,255,0.4)",
+                background: person === p ? "hsl(330,100%,55%)" : "rgba(255,255,255,0.80)",
+                borderColor: person === p ? "hsl(330,100%,55%)" : "rgba(255,150,200,0.35)",
+                color: person === p ? "white" : "rgba(80,20,80,0.55)",
+                boxShadow: person === p ? "0 0 12px rgba(255,20,147,0.35)" : "none",
               }}
             >
               {personLabels[p]}
@@ -328,54 +333,60 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
           ))}
         </div>
         <label
-          className="flex items-center gap-2 text-xs rounded-lg px-3 py-2.5 border border-white/12 cursor-pointer text-white/35 w-full overflow-hidden"
-          style={{ background: "rgba(255,255,255,0.04)" }}
+          className="flex items-center gap-2 text-xs rounded-xl px-3 py-2.5 border cursor-pointer w-full overflow-hidden"
+          style={{
+            background: "rgba(255,255,255,0.80)",
+            borderColor: "rgba(255,150,200,0.35)",
+            color: "rgba(80,20,80,0.45)",
+          }}
         >
-          <Music2 className="w-3.5 h-3.5 shrink-0" />
+          <Music2 className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(330,100%,55%)" }} />
           <span className="truncate flex-1">
             {audioFile ? audioFile.name : "Upload audio / video (opsional)"}
           </span>
           {audioFile && (
-            <button
-              type="button"
-              className="shrink-0 text-white/30 hover:text-white/60 text-xs"
-              onClick={e => { e.preventDefault(); setAudioFile(null); if (fileRef.current) fileRef.current.value = ""; }}
-            >✕</button>
+            <button type="button" className="shrink-0 text-xs" style={{ color: "rgba(80,20,80,0.35)" }}
+              onClick={e => { e.preventDefault(); setAudioFile(null); if (fileRef.current) fileRef.current.value = ""; }}>
+              ✕
+            </button>
           )}
-          <input ref={fileRef} type="file" accept="audio/*,video/*" className="hidden" onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
+          <input ref={fileRef} type="file" accept="audio/*,video/*" className="hidden"
+            onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
         </label>
-        <Button
-          size="sm"
-          onClick={handleAdd}
-          disabled={isCreating || !title.trim()}
+        <Button size="sm" onClick={handleAdd} disabled={isCreating || !title.trim()}
           className="w-full h-10 text-sm font-medium text-white"
-          style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
-        >
+          style={{ background: G, boxShadow: "0 4px 14px rgba(255,20,147,0.30)" }}>
           {isCreating ? "Menyimpan..." : "+ Tambah Lagu"}
         </Button>
       </div>
 
       {songs.length === 0 ? (
-        <EmptyState icon={<Music2 className="w-6 h-6 text-white/20" />} label="Belum ada lagu" />
+        <EmptyState icon={<Music2 className="w-6 h-6" style={{ color: "rgba(255,20,147,0.30)" }} />} label="Belum ada lagu" />
       ) : (
         <div className="space-y-2">
           {songs.map(song => (
-            <div key={song.id} className="flex items-center gap-3 rounded-xl px-3 py-2.5 border border-white/8" style={{ background: "rgba(255,255,255,0.04)" }}>
-              <div className="shrink-0 relative">
-                <Music2 className="w-4 h-4 shrink-0" style={{ color: song.audioUrl ? "hsl(330,85%,55%)" : "rgba(255,255,255,0.20)" }} />
+            <div key={song.id} className="flex items-center gap-3 rounded-2xl px-3 py-2.5" style={cardStyle}>
+              <div className="shrink-0">
+                <Music2 className="w-4 h-4" style={{ color: song.audioUrl ? "hsl(330,100%,55%)" : "rgba(80,20,80,0.20)", filter: song.audioUrl ? "drop-shadow(0 0 4px rgba(255,20,147,0.5))" : "none" }} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-white/80 text-sm truncate">{song.title || "Tanpa judul"}</p>
+                  <p className="text-sm truncate" style={{ color: "hsl(280,60%,10%)" }}>
+                    {song.title || "Tanpa judul"}
+                  </p>
                   {!song.audioUrl && (
-                    <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-white/25 shrink-0">no audio</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded border shrink-0"
+                      style={{ color: "rgba(80,20,80,0.30)", borderColor: "rgba(255,150,200,0.25)" }}>
+                      no audio
+                    </span>
                   )}
                 </div>
-                <p className="text-white/30 text-xs">
+                <p className="text-xs" style={{ color: "rgba(80,20,80,0.38)" }}>
                   {song.artist ? `${song.artist} · ` : ""}{personLabels[song.person] ?? song.person}
                 </p>
               </div>
-              <Button variant="ghost" size="icon" className="w-7 h-7 text-white/20 hover:text-red-400 shrink-0"
+              <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
+                style={{ color: "rgba(80,20,80,0.25)" }}
                 onClick={() => deleteSong({ id: song.id })}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
@@ -411,52 +422,59 @@ function DiarySection() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-white/8 p-4 space-y-3" style={{ background: "rgba(255,255,255,0.03)" }}>
-        <p className="text-white/40 text-xs uppercase tracking-widest">Tulis Entri Baru</p>
+      <div className="rounded-2xl p-4 space-y-3" style={cardStyle}>
+        <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(80,20,80,0.40)" }}>
+          Tulis Entri Baru
+        </p>
         <Textarea
           placeholder="Tulis perasaan atau cerita hari ini..."
           value={content}
           onChange={e => setContent(e.target.value)}
           rows={4}
-          className="text-sm border-white/15 text-white placeholder:text-white/25 resize-none"
-          style={{ background: "rgba(255,255,255,0.05)" }}
+          className="text-sm resize-none placeholder:text-pink-300"
+          style={inputStyle}
         />
         <div className="flex gap-2">
           <label
-            className="flex-1 flex items-center gap-2 text-xs rounded-lg px-3 py-2 border border-white/12 cursor-pointer text-white/35"
-            style={{ background: "rgba(255,255,255,0.04)" }}
+            className="flex-1 flex items-center gap-2 text-xs rounded-xl px-3 py-2 border cursor-pointer"
+            style={{
+              background: "rgba(255,255,255,0.80)",
+              borderColor: "rgba(255,150,200,0.35)",
+              color: "rgba(80,20,80,0.45)",
+            }}
           >
-            <ImageIcon className="w-3.5 h-3.5" />
+            <ImageIcon className="w-3.5 h-3.5" style={{ color: "hsl(330,100%,55%)" }} />
             {imageFile ? imageFile.name : "Tambah foto (opsional)"}
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={e => setImageFile(e.target.files?.[0] ?? null)} />
+            <input ref={fileRef} type="file" accept="image/*" className="hidden"
+              onChange={e => setImageFile(e.target.files?.[0] ?? null)} />
           </label>
-          <Button
-            size="sm"
-            onClick={handleSave}
-            disabled={isCreating || !content.trim()}
+          <Button size="sm" onClick={handleSave} disabled={isCreating || !content.trim()}
             className="h-9 shrink-0 text-xs text-white px-4"
-            style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
-          >
+            style={{ background: G, boxShadow: "0 4px 12px rgba(255,20,147,0.28)" }}>
             Simpan
           </Button>
         </div>
       </div>
 
       {entries.length === 0 ? (
-        <EmptyState icon={<BookOpen className="w-6 h-6 text-white/20" />} label="Belum ada entri diary" />
+        <EmptyState icon={<BookOpen className="w-6 h-6" style={{ color: "rgba(255,20,147,0.30)" }} />} label="Belum ada entri diary" />
       ) : (
         <div className="space-y-3">
           {entries.map(entry => (
-            <div key={entry.id} className="rounded-xl border border-white/8 overflow-hidden" style={{ background: "rgba(255,255,255,0.04)" }}>
+            <div key={entry.id} className="rounded-2xl overflow-hidden" style={cardStyle}>
               {entry.imageUrl && (
                 <img src={entry.imageUrl} alt="" className="w-full h-36 object-cover" />
               )}
               <div className="p-3">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-white/60 text-xs leading-relaxed flex-1 line-clamp-3 whitespace-pre-line">{entry.content}</p>
+                  <p className="text-xs leading-relaxed flex-1 line-clamp-3 whitespace-pre-line"
+                    style={{ color: "rgba(80,20,80,0.65)" }}>
+                    {entry.content}
+                  </p>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon" className="w-7 h-7 text-white/20 hover:text-red-400 shrink-0">
+                      <Button variant="ghost" size="icon" className="w-7 h-7 shrink-0 hover:text-red-400"
+                        style={{ color: "rgba(80,20,80,0.25)" }}>
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
                     </AlertDialogTrigger>
@@ -467,12 +485,13 @@ function DiarySection() {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteEntry({ id: entry.id })} className="bg-destructive text-destructive-foreground">Hapus</AlertDialogAction>
+                        <AlertDialogAction onClick={() => deleteEntry({ id: entry.id })}
+                          className="bg-destructive text-destructive-foreground">Hapus</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
-                <p className="text-white/20 text-[10px] mt-1">
+                <p className="text-[10px] mt-1" style={{ color: "rgba(80,20,80,0.30)" }}>
                   {new Date(entry.createdAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}
                 </p>
               </div>
@@ -486,9 +505,15 @@ function DiarySection() {
 
 function EmptyState({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="py-12 text-center flex flex-col items-center gap-3 border border-white/5 rounded-xl" style={{ background: "rgba(255,255,255,0.02)" }}>
+    <div
+      className="py-12 text-center flex flex-col items-center gap-3 rounded-2xl"
+      style={{
+        background: "rgba(255,255,255,0.55)",
+        border: "1px dashed rgba(255,150,200,0.35)",
+      }}
+    >
       {icon}
-      <p className="text-white/25 text-xs">{label}</p>
+      <p className="text-xs" style={{ color: "rgba(80,20,80,0.30)" }}>{label}</p>
     </div>
   );
 }

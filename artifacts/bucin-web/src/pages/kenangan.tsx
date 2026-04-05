@@ -12,10 +12,12 @@ export default function Kenangan() {
       <div className="min-h-[100dvh] px-4 pt-8 pb-4 max-w-2xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center gap-2 mb-1">
-            <Camera className="w-4 h-4 text-primary/60" />
-            <h1 className="text-sm font-bold uppercase tracking-[0.25em] text-white/50">Kenangan Kita</h1>
+            <Camera className="w-4 h-4" style={{ color: "hsl(330,100%,55%)" }} />
+            <h1 className="text-sm font-bold uppercase tracking-[0.25em]" style={{ color: "rgba(80,20,80,0.50)" }}>
+              Kenangan Kita
+            </h1>
           </div>
-          <p className="text-white/25 text-xs">{memories.length} foto tersimpan</p>
+          <p className="text-xs" style={{ color: "rgba(80,20,80,0.30)" }}>{memories.length} foto tersimpan</p>
         </motion.div>
 
         {isLoading ? (
@@ -24,8 +26,10 @@ export default function Kenangan() {
           </div>
         ) : memories.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-60 gap-3">
-            <Heart className="w-10 h-10 text-primary/20 fill-primary/5" />
-            <p className="text-white/20 text-sm font-serif italic">Belum ada kenangan yang disimpan</p>
+            <Heart className="w-10 h-10" style={{ color: "rgba(255,20,147,0.25)", fill: "rgba(255,20,147,0.08)" }} />
+            <p className="text-sm font-serif italic" style={{ color: "rgba(80,20,80,0.28)" }}>
+              Belum ada kenangan yang disimpan
+            </p>
           </div>
         ) : (
           <div className="space-y-8">
@@ -40,17 +44,27 @@ export default function Kenangan() {
                   transition={{ duration: 0.5 }}
                   className={`flex gap-4 items-start ${!isLeft ? "flex-row-reverse" : ""}`}
                 >
-                  <div className="w-36 shrink-0 rounded-xl overflow-hidden aspect-[3/4] border border-white/8">
+                  <div
+                    className="w-36 shrink-0 rounded-2xl overflow-hidden aspect-[3/4]"
+                    style={{
+                      border: "1.5px solid rgba(255,180,220,0.45)",
+                      boxShadow: "0 8px 24px rgba(255,20,147,0.10)",
+                    }}
+                  >
                     <img src={memory.imageUrl} alt={memory.title} className="w-full h-full object-cover" />
                   </div>
                   <div className={`flex-1 pt-2 ${!isLeft ? "text-right" : ""}`}>
                     {memory.memoryDate && (
-                      <p className="text-[10px] text-white/25 uppercase tracking-widest mb-1">
+                      <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: "rgba(80,20,80,0.32)" }}>
                         {formatDate(memory.memoryDate)}
                       </p>
                     )}
-                    <h3 className="text-white/85 font-serif text-lg leading-snug mb-2">{memory.title}</h3>
-                    <p className="text-white/40 text-xs leading-relaxed">{memory.caption}</p>
+                    <h3 className="font-serif text-lg leading-snug mb-2" style={{ color: "hsl(280,60%,12%)" }}>
+                      {memory.title}
+                    </h3>
+                    <p className="text-xs leading-relaxed" style={{ color: "rgba(80,20,80,0.50)" }}>
+                      {memory.caption}
+                    </p>
                   </div>
                 </motion.div>
               );
