@@ -24,11 +24,11 @@ export function LoginForm() {
       <div
         className="rounded-3xl p-8 space-y-6"
         style={{
-          background: "rgba(255,255,255,0.80)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,180,220,0.45)",
-          boxShadow: "0 16px 48px rgba(255,20,147,0.12)",
+          background: "rgba(255,255,255,0.05)",
+          backdropFilter: "blur(28px)",
+          WebkitBackdropFilter: "blur(28px)",
+          border: "1px solid rgba(255,30,140,0.25)",
+          boxShadow: "0 16px 48px rgba(255,20,147,0.18), inset 0 1px 0 rgba(255,255,255,0.07)",
         }}
       >
         <div className="flex flex-col items-center gap-3">
@@ -36,12 +36,12 @@ export function LoginForm() {
             className="w-16 h-16 rounded-full flex items-center justify-center"
             style={{
               background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
-              boxShadow: "0 8px 24px rgba(255,20,147,0.35)",
+              boxShadow: "0 8px 28px rgba(255,20,147,0.55), 0 0 0 8px rgba(255,20,147,0.10)",
             }}
           >
             <Heart className="w-8 h-8 text-white fill-white" />
           </div>
-          <p className="text-xs tracking-[0.3em] uppercase font-semibold" style={{ color: "rgba(80,20,80,0.45)" }}>
+          <p className="text-xs tracking-[0.3em] uppercase font-semibold" style={{ color: "rgba(255,150,200,0.50)" }}>
             Masuk ke Panel
           </p>
         </div>
@@ -52,16 +52,15 @@ export function LoginForm() {
             placeholder="Kode rahasia"
             value={password}
             onChange={(e) => { setPassword(e.target.value); setError(""); }}
-            className="text-center tracking-[0.2em] h-12 text-base rounded-xl placeholder:tracking-normal"
+            className="text-center tracking-[0.2em] h-12 text-base rounded-xl text-white placeholder:tracking-normal placeholder:text-white/20"
             style={{
-              background: "rgba(255,255,255,0.90)",
-              borderColor: "rgba(255,150,200,0.40)",
-              color: "hsl(280,60%,10%)",
+              background: "rgba(255,255,255,0.06)",
+              borderColor: "rgba(255,30,140,0.25)",
             }}
             autoComplete="current-password"
           />
           {error && (
-            <p className="text-red-500 text-xs text-center">{error}</p>
+            <p className="text-red-400 text-xs text-center">{error}</p>
           )}
           <Button
             type="submit"
@@ -69,16 +68,16 @@ export function LoginForm() {
             className="w-full h-12 font-bold tracking-[0.15em] text-sm uppercase rounded-xl text-white"
             style={{
               background: isLoggingIn || !password
-                ? "rgba(255,20,147,0.25)"
+                ? "rgba(255,20,147,0.20)"
                 : "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
-              boxShadow: isLoggingIn || !password ? "none" : "0 8px 24px rgba(255,20,147,0.35)",
+              boxShadow: isLoggingIn || !password ? "none" : "0 8px 28px rgba(255,20,147,0.50)",
             }}
           >
             {isLoggingIn ? "..." : "Masuk →"}
           </Button>
         </form>
 
-        <p className="text-center text-xs" style={{ color: "rgba(80,20,80,0.30)" }}>
+        <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.18)" }}>
           Belum punya akses? Hubungi pemilik
         </p>
       </div>

@@ -16,17 +16,17 @@ export function MiniPlayer() {
           transition={{ type: "spring", stiffness: 280, damping: 28 }}
           className="shrink-0 overflow-hidden"
           style={{
-            background: "rgba(255,255,255,0.88)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
-            borderTop: "1px solid rgba(255,150,200,0.25)",
-            boxShadow: "0 -4px 20px rgba(255,20,147,0.07)",
+            background: "rgba(6,0,14,0.95)",
+            backdropFilter: "blur(28px)",
+            WebkitBackdropFilter: "blur(28px)",
+            borderTop: "1px solid rgba(255,30,140,0.18)",
+            boxShadow: "0 -4px 24px rgba(255,20,147,0.12)",
           }}
         >
           {/* Seekable progress bar */}
           <div
             className="h-0.5 w-full cursor-pointer"
-            style={{ background: "rgba(255,20,147,0.10)" }}
+            style={{ background: "rgba(255,20,147,0.12)" }}
             onClick={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               seek((e.clientX - rect.left) / rect.width);
@@ -38,7 +38,7 @@ export function MiniPlayer() {
                 width: `${progress * 100}%`,
                 background: "linear-gradient(90deg, hsl(330,100%,55%), hsl(310,100%,50%))",
                 transition: "width 0.3s linear",
-                boxShadow: "0 0 8px rgba(255,20,147,0.6)",
+                boxShadow: "0 0 8px rgba(255,20,147,0.8)",
               }}
             />
           </div>
@@ -49,7 +49,7 @@ export function MiniPlayer() {
               className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
               style={{
                 background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
-                boxShadow: "0 4px 12px rgba(255,20,147,0.35)",
+                boxShadow: "0 4px 14px rgba(255,20,147,0.50)",
               }}
             >
               {isPlaying ? (
@@ -70,11 +70,11 @@ export function MiniPlayer() {
 
             {/* Song info */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate leading-tight" style={{ color: "hsl(280,60%,10%)" }}>
+              <p className="text-sm font-medium truncate leading-tight text-white/90">
                 {currentSong.title}
               </p>
               {currentSong.artist && (
-                <p className="text-[11px] truncate" style={{ color: "rgba(80,20,80,0.45)" }}>
+                <p className="text-[11px] truncate" style={{ color: "rgba(255,150,200,0.50)" }}>
                   {currentSong.artist}
                 </p>
               )}
@@ -87,7 +87,7 @@ export function MiniPlayer() {
                 className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-transform"
                 style={{
                   background: "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))",
-                  boxShadow: "0 4px 14px rgba(255,20,147,0.4)",
+                  boxShadow: "0 4px 14px rgba(255,20,147,0.55)",
                 }}
               >
                 {isPlaying
@@ -97,8 +97,7 @@ export function MiniPlayer() {
               </button>
               <button
                 onClick={stop}
-                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                style={{ color: "rgba(80,20,80,0.30)" }}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors text-white/20 hover:text-white/50"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

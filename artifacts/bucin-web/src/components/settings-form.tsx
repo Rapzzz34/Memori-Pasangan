@@ -137,13 +137,13 @@ export function SettingsForm() {
             {/* Passwords */}
             <div
               className="border rounded-xl p-4 space-y-4"
-              style={{ borderColor: "rgba(255,150,200,0.25)", background: "rgba(255,240,248,0.50)" }}
+              style={{ borderColor: "rgba(255,30,140,0.18)", background: "rgba(255,20,147,0.06)" }}
             >
               <div className="flex items-center gap-2">
                 <Lock className="w-3.5 h-3.5 text-primary/60" />
                 <p className="text-sm font-medium text-foreground">Kata Sandi Login Owner</p>
               </div>
-              <p className="text-[11px]" style={{ color: "rgba(80,20,80,0.45)" }}>
+              <p className="text-[11px]" style={{ color: "rgba(255,150,200,0.40)" }}>
                 Kosongkan jika tidak ingin mengubah.
                 Default: <code className="font-mono">kenangan1</code> (orang pertama) &amp;{" "}
                 <code className="font-mono">kenangan2</code> (orang kedua)

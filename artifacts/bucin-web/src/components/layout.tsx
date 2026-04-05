@@ -17,17 +17,14 @@ export function Layout({ children, hideNav }: { children: ReactNode; hideNav?: b
           <Link
             href="/owner"
             className="text-[9px] uppercase tracking-widest transition-colors px-2 py-1"
-            style={{ color: "rgba(80,20,80,0.25)" }}
+            style={{ color: "rgba(255,255,255,0.18)" }}
           >
             {isOwner ? "Panel" : "Owner"}
           </Link>
         </div>
       </div>
 
-      {/* Mini player — appears above nav when song is playing */}
       {!hideNav && <MiniPlayer />}
-
-      {/* Bottom nav — always visible */}
       {!hideNav && <BottomNav />}
     </div>
   );

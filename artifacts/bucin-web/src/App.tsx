@@ -33,50 +33,50 @@ function App() {
       <TooltipProvider>
         <AudioProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            {/* Outer: soft pink-white gradient fills screen */}
+            {/* Outer: deep black fills the screen */}
             <div
               className="w-full min-h-screen flex items-start justify-center relative overflow-hidden"
-              style={{ background: "linear-gradient(145deg, #fff0f8 0%, #fce8ff 40%, #ffe8f5 70%, #f8f0ff 100%)" }}
+              style={{ background: "#06000d" }}
             >
-              {/* Floating neon blobs */}
+              {/* Floating neon pink blobs */}
               <div className="pointer-events-none fixed inset-0 overflow-hidden">
                 <div style={{
-                  position: "absolute", width: 340, height: 340,
-                  top: "5%", left: "-8%",
-                  background: "radial-gradient(circle, rgba(255,20,147,0.18) 0%, transparent 70%)",
+                  position: "absolute", width: 400, height: 400,
+                  top: "-5%", left: "-10%",
+                  background: "radial-gradient(circle, rgba(255,20,147,0.22) 0%, transparent 65%)",
+                  filter: "blur(70px)", borderRadius: "50%",
+                }} />
+                <div style={{
+                  position: "absolute", width: 300, height: 300,
+                  top: "35%", right: "-8%",
+                  background: "radial-gradient(circle, rgba(220,30,180,0.18) 0%, transparent 65%)",
                   filter: "blur(60px)", borderRadius: "50%",
                 }} />
                 <div style={{
-                  position: "absolute", width: 280, height: 280,
-                  top: "30%", right: "-5%",
-                  background: "radial-gradient(circle, rgba(220,80,255,0.14) 0%, transparent 70%)",
-                  filter: "blur(50px)", borderRadius: "50%",
+                  position: "absolute", width: 350, height: 350,
+                  bottom: "5%", left: "2%",
+                  background: "radial-gradient(circle, rgba(255,0,120,0.16) 0%, transparent 65%)",
+                  filter: "blur(65px)", borderRadius: "50%",
                 }} />
                 <div style={{
-                  position: "absolute", width: 320, height: 320,
-                  bottom: "10%", left: "5%",
-                  background: "radial-gradient(circle, rgba(255,80,160,0.13) 0%, transparent 70%)",
-                  filter: "blur(55px)", borderRadius: "50%",
-                }} />
-                <div style={{
-                  position: "absolute", width: 200, height: 200,
-                  top: "60%", right: "10%",
-                  background: "radial-gradient(circle, rgba(255,150,200,0.12) 0%, transparent 70%)",
-                  filter: "blur(40px)", borderRadius: "50%",
+                  position: "absolute", width: 220, height: 220,
+                  top: "65%", right: "5%",
+                  background: "radial-gradient(circle, rgba(255,80,180,0.14) 0%, transparent 65%)",
+                  filter: "blur(45px)", borderRadius: "50%",
                 }} />
               </div>
 
-              {/* Phone frame */}
+              {/* Phone frame — dark glass */}
               <div
                 className="relative flex flex-col w-full"
                 style={{
                   maxWidth: 430,
                   minHeight: "100dvh",
                   height: "100dvh",
-                  background: "rgba(255,255,255,0.55)",
+                  background: "rgba(8,0,16,0.78)",
                   backdropFilter: "blur(60px)",
                   WebkitBackdropFilter: "blur(60px)",
-                  boxShadow: "0 0 0 1px rgba(255,180,220,0.35), 0 20px 80px rgba(255,20,147,0.10), 0 0 120px rgba(255,100,200,0.06)",
+                  boxShadow: "0 0 0 1px rgba(255,30,140,0.22), 0 20px 80px rgba(255,20,147,0.15), inset 0 1px 0 rgba(255,255,255,0.06)",
                 }}
               >
                 <Router />
