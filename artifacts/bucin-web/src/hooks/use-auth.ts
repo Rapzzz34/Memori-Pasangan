@@ -21,15 +21,11 @@ export function useAuth() {
     mutation: {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
-        toast({
-          title: "Welcome back",
-          description: "You have successfully logged in.",
-        });
       },
-      onError: (error) => {
+      onError: () => {
         toast({
-          title: "Login failed",
-          description: error.error || "Please check your password and try again.",
+          title: "Kode salah",
+          description: "Coba lagi dengan kode yang benar.",
           variant: "destructive",
         });
       },
@@ -40,16 +36,13 @@ export function useAuth() {
     mutation: {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
-        toast({
-          title: "Logged out",
-          description: "You have been logged out successfully.",
-        });
       },
     },
   });
 
   return {
     isOwner: me?.isOwner ?? false,
+    personId: me?.personId ?? null,
     isLoading,
     login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,

@@ -571,8 +571,11 @@ components:
       properties:
         isOwner:
           type: boolean
+        personId:
+          type: ["integer", "null"]
       required:
         - isOwner
+        - personId
 
     Memory:
       type: object
@@ -673,6 +676,10 @@ components:
         person1Birthday:
           type: ["string", "null"]
         person2Birthday:
+          type: ["string", "null"]
+        person1Password:
+          type: ["string", "null"]
+        person2Password:
           type: ["string", "null"]
 
     BucketListItem:

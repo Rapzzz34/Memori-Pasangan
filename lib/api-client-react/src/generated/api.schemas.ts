@@ -28,6 +28,8 @@ export interface LoginResponse {
 
 export interface MeResponse {
   isOwner: boolean;
+  /** @nullable */
+  personId: number | null;
 }
 
 export interface Memory {
@@ -81,6 +83,10 @@ export interface UpdateSettingsBody {
   person1Birthday?: string | null;
   /** @nullable */
   person2Birthday?: string | null;
+  /** @nullable */
+  person1Password?: string | null;
+  /** @nullable */
+  person2Password?: string | null;
 }
 
 export interface BucketListItem {

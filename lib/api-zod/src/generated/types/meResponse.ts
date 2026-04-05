@@ -8,4 +8,6 @@
 
 export interface MeResponse {
   isOwner: boolean;
+  /** @nullable */
+  personId: number | null;
 }

@@ -42,6 +42,7 @@ export const LogoutResponse = zod.object({
  */
 export const GetMeResponse = zod.object({
   isOwner: zod.boolean(),
+  personId: zod.number().nullable(),
 });
 
 /**
@@ -146,6 +147,8 @@ export const UpdateSettingsBody = zod.object({
   loveMessage: zod.string().optional(),
   person1Birthday: zod.string().nullish(),
   person2Birthday: zod.string().nullish(),
+  person1Password: zod.string().nullish(),
+  person2Password: zod.string().nullish(),
 });
 
 export const UpdateSettingsResponse = zod.object({

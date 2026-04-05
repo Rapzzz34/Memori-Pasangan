@@ -1,22 +1,23 @@
 import { Link } from "wouter";
 import { ReactNode } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { Heart } from "lucide-react";
+import { BottomNav } from "@/components/bottom-nav";
 
-export function Layout({ children }: { children: ReactNode }) {
+export function Layout({ children, hideNav }: { children: ReactNode; hideNav?: boolean }) {
   const { isOwner } = useAuth();
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background text-foreground">
-      <main className="flex-1 w-full">{children}</main>
-      <footer className="py-6 text-center text-xs text-muted-foreground/40 flex flex-col items-center gap-3">
-        <p className="flex items-center gap-1.5 font-serif italic">
-          Made with <Heart className="w-3 h-3 text-primary/50 fill-primary/20" /> love
-        </p>
-        <Link href="/owner" className="hover:text-primary transition-colors opacity-40 hover:opacity-100 tracking-widest uppercase text-[10px]">
-          {isOwner ? "Owner Panel" : "Owner"}
+      <main className="flex-1 w-full pb-20">{children}</main>
+      {!hideNav && <BottomNav />}
+      <div className="fixed top-3 right-3 z-50">
+        <Link
+          href="/owner"
+          className="text-[9px] uppercase tracking-widest text-white/20 hover:text-primary transition-colors px-2 py-1"
+        >
+          {isOwner ? "Panel" : "Owner"}
         </Link>
-      </footer>
+      </div>
     </div>
   );
 }

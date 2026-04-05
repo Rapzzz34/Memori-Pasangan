@@ -11,6 +11,8 @@ export const siteSettingsTable = pgTable("site_settings", {
   coverImageUrl: text("cover_image_url"),
   person1Birthday: text("person1_birthday"),
   person2Birthday: text("person2_birthday"),
+  person1Password: text("person1_password"),
+  person2Password: text("person2_password"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });
 

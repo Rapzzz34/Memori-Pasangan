@@ -4,6 +4,7 @@ import { useMemories } from "@/hooks/use-memories";
 import { useBucketList } from "@/hooks/use-bucket-list";
 import { useSongs } from "@/hooks/use-songs";
 import { useDiary } from "@/hooks/use-diary";
+import { useSettings } from "@/hooks/use-settings";
 import { Layout } from "@/components/layout";
 import { LoginForm } from "@/components/login-form";
 import { SettingsForm } from "@/components/settings-form";
@@ -19,7 +20,8 @@ import { Plus, Settings, Image as ImageIcon, Trash2, LogOut, Music2, BookOpen, C
 import type { Memory } from "@workspace/api-client-react";
 
 export default function OwnerPanel() {
-  const { isOwner, logout, isLoading: authLoading } = useAuth();
+  const { isOwner, personId, logout, isLoading: authLoading } = useAuth();
+  const { settings } = useSettings();
 
   if (authLoading) {
     return (
@@ -50,7 +52,14 @@ export default function OwnerPanel() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-xl font-serif text-white">Owner Panel</h1>
-            <p className="text-white/35 text-xs mt-0.5">Kelola kenangan kalian</p>
+            <p className="text-white/35 text-xs mt-0.5">
+              {personId === 1
+                ? `Login sebagai ${settings?.person1Name || "Orang Pertama"}`
+                : personId === 2
+                ? `Login sebagai ${settings?.person2Name || "Orang Kedua"}`
+                : "Kelola kenangan kalian"
+              }
+            </p>
           </div>
           <Button
             variant="ghost"
@@ -95,7 +104,11 @@ export default function OwnerPanel() {
 
           {/* SONGS TAB */}
           <TabsContent value="songs" className="mt-6 space-y-4">
-            <SongsSection />
+            <SongsSection
+              personId={personId}
+              name1={settings?.person1Name || "Orang Pertama"}
+              name2={settings?.person2Name || "Orang Kedua"}
+            />
           </TabsContent>
 
           {/* DIARY TAB */}
@@ -253,11 +266,13 @@ function BucketListSection() {
   );
 }
 
-function SongsSection() {
+function SongsSection({ personId, name1, name2 }: { personId: number | null; name1: string; name2: string }) {
   const { songs, createSong, isCreating, deleteSong } = useSongs();
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
-  const [person, setPerson] = useState("both");
+  const [person, setPerson] = useState<string>(
+    personId === 1 ? "person1" : personId === 2 ? "person2" : "both"
+  );
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -280,8 +295,8 @@ function SongsSection() {
 
   const personLabels: Record<string, string> = {
     both: "Berdua",
-    person1: "Playlist Dia",
-    person2: "Playlist Kamu",
+    person1: `Playlist ${name1}`,
+    person2: `Playlist ${name2}`,
   };
 
   return (

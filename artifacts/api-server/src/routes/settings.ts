@@ -46,6 +46,8 @@ router.patch("/settings", async (req, res): Promise<void> => {
   if (parsed.data.loveMessage != null) updateData["loveMessage"] = parsed.data.loveMessage;
   if ("person1Birthday" in parsed.data) updateData["person1Birthday"] = parsed.data.person1Birthday;
   if ("person2Birthday" in parsed.data) updateData["person2Birthday"] = parsed.data.person2Birthday;
+  if ("person1Password" in parsed.data && parsed.data.person1Password != null) updateData["person1Password"] = parsed.data.person1Password;
+  if ("person2Password" in parsed.data && parsed.data.person2Password != null) updateData["person2Password"] = parsed.data.person2Password;
 
   const [settings] = await db
     .update(siteSettingsTable)
