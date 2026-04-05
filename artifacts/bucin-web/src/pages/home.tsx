@@ -43,8 +43,8 @@ export default function Home() {
   return (
     <Layout>
       <section
-        className="min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 relative overflow-hidden"
-        style={{ background: "linear-gradient(160deg, hsl(222,55%,9%) 0%, hsl(240,40%,8%) 50%, hsl(222,47%,6%) 100%)" }}
+        className="min-h-full flex flex-col items-center justify-center text-center px-6 relative overflow-hidden"
+        style={{ minHeight: "calc(100dvh - 120px)", background: "linear-gradient(160deg, hsl(222,55%,9%) 0%, hsl(240,40%,8%) 50%, hsl(222,47%,6%) 100%)" }}
       >
         {/* Stars */}
         {[...Array(24)].map((_, i) => (

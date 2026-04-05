@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AudioProvider } from "@/contexts/audio-context";
 import Home from "@/pages/home";
 import Kenangan from "@/pages/kenangan";
 import Impian from "@/pages/impian";
@@ -30,10 +31,30 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <AudioProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            {/* Outer: dark bg fills screen on desktop */}
+            <div
+              className="w-full min-h-screen flex items-start justify-center"
+              style={{ background: "hsl(222,50%,4%)" }}
+            >
+              {/* Phone frame: 430px max, full height */}
+              <div
+                className="relative flex flex-col w-full"
+                style={{
+                  maxWidth: 430,
+                  minHeight: "100dvh",
+                  height: "100dvh",
+                  background: "hsl(222,47%,6%)",
+                  boxShadow: "0 0 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)",
+                }}
+              >
+                <Router />
+              </div>
+            </div>
+          </WouterRouter>
+          <Toaster />
+        </AudioProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

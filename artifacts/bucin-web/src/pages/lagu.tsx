@@ -1,55 +1,91 @@
 import { useSongs } from "@/hooks/use-songs";
 import { useSettings } from "@/hooks/use-settings";
+import { useAudio } from "@/contexts/audio-context";
 import { Layout } from "@/components/layout";
-import { Music2, Play, Heart } from "lucide-react";
+import { Music2, Play, Pause, Heart } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import type { Song } from "@workspace/api-client-react";
 
 function SongCard({ song }: { song: Song }) {
-  const [playing, setPlaying] = useState(false);
-  const [audio] = useState(() => song.audioUrl ? new Audio(song.audioUrl) : null);
-
-  const toggle = () => {
-    if (!audio) return;
-    if (playing) {
-      audio.pause();
-      setPlaying(false);
-    } else {
-      void audio.play();
-      setPlaying(true);
-    }
-  };
+  const { toggle, currentSong, isPlaying } = useAudio();
+  const isThisSong = currentSong?.id === song.id;
+  const isThisPlaying = isThisSong && isPlaying;
+  const hasAudio = !!song.audioUrl;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.92 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="rounded-xl border border-white/8 overflow-hidden"
-      style={{ background: "rgba(255,255,255,0.04)" }}
+      className="rounded-2xl border overflow-hidden cursor-pointer active:scale-95 transition-transform"
+      style={{
+        background: isThisSong
+          ? "linear-gradient(145deg, rgba(180,40,100,0.18), rgba(130,20,80,0.10))"
+          : "rgba(255,255,255,0.04)",
+        borderColor: isThisSong ? "rgba(330,85%,58%,0.3)" : "rgba(255,255,255,0.07)",
+      }}
+      onClick={() => hasAudio && toggle({ id: song.id, title: song.title, artist: song.artist, audioUrl: song.audioUrl })}
     >
+      {/* Thumbnail area */}
       <div
-        className="relative aspect-square flex items-center justify-center"
-        style={{ background: "rgba(255,255,255,0.04)" }}
+        className="relative aspect-square flex flex-col items-center justify-center gap-2"
+        style={{
+          background: isThisSong
+            ? "linear-gradient(160deg, hsl(330,60%,18%), hsl(320,50%,12%))"
+            : "rgba(255,255,255,0.03)",
+        }}
       >
-        <Music2 className="w-10 h-10 text-white/15" />
-        {song.audioUrl && (
-          <button
-            onClick={toggle}
-            className="absolute bottom-2 right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-lg"
+        {/* Animated bars when playing */}
+        {isThisPlaying ? (
+          <div className="flex items-end gap-1 h-8">
+            {[...Array(4)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1 rounded-full"
+                style={{ background: "hsl(330,85%,65%)" }}
+                animate={{ height: ["8px", "28px", "6px", "20px", "8px"] }}
+                transition={{ duration: 0.7 + i * 0.1, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
+              />
+            ))}
+          </div>
+        ) : (
+          <Music2
+            className="w-8 h-8"
+            style={{ color: isThisSong ? "hsl(330,85%,65%)" : "rgba(255,255,255,0.12)" }}
+          />
+        )}
+
+        {/* Play/pause button overlay */}
+        {hasAudio && (
+          <div
+            className="absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
             style={{ background: "linear-gradient(135deg, hsl(330,85%,58%), hsl(320,90%,48%))" }}
           >
-            {playing
-              ? <span className="flex gap-0.5"><span className="w-1 h-3.5 bg-white rounded-sm" /><span className="w-1 h-3.5 bg-white rounded-sm" /></span>
-              : <Play className="w-4 h-4 text-white fill-white ml-0.5" />
+            {isThisPlaying
+              ? <Pause className="w-3.5 h-3.5 text-white fill-white" />
+              : <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
             }
-          </button>
+          </div>
+        )}
+
+        {!hasAudio && (
+          <span className="text-[9px] text-white/20 absolute bottom-1.5 right-2">no audio</span>
         )}
       </div>
-      <div className="p-3 text-center">
-        <p className="text-white/80 text-sm font-medium truncate">{song.title}</p>
-        {song.artist && <p className="text-white/30 text-[11px] truncate mt-0.5">{song.artist}</p>}
+
+      {/* Info */}
+      <div className="px-2.5 py-2 text-center">
+        <p
+          className="text-xs font-medium truncate leading-tight"
+          style={{ color: isThisSong ? "hsl(330,80%,75%)" : "rgba(255,255,255,0.8)" }}
+        >
+          {song.title || "Tanpa judul"}
+        </p>
+        {song.artist && (
+          <p className="text-[10px] truncate mt-0.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+            {song.artist}
+          </p>
+        )}
       </div>
     </motion.div>
   );
@@ -67,7 +103,7 @@ export default function Lagu() {
 
   return (
     <Layout>
-      <div className="min-h-[100dvh] px-4 pt-8 pb-4 max-w-2xl mx-auto">
+      <div className="min-h-[100dvh] px-4 pt-8 pb-4">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center gap-2 mb-1">
             <Music2 className="w-4 h-4 text-primary/60" />

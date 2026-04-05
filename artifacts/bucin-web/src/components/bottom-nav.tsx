@@ -14,10 +14,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/8"
-      style={{ background: "rgba(10,15,30,0.92)", backdropFilter: "blur(20px)" }}
+      className="shrink-0 border-t border-white/8"
+      style={{ background: "rgba(10,15,30,0.96)" }}
     >
-      <div className="flex items-center justify-around max-w-lg mx-auto px-2 py-2">
+      <div className="flex items-center justify-around px-2 py-2 pb-safe">
         {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
           const active = location === href || (href !== "/" && location.startsWith(href));
           return (
@@ -27,7 +27,6 @@ export function BottomNav() {
               className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all min-w-[52px]"
               style={{
                 color: active ? "hsl(330,85%,65%)" : "rgba(255,255,255,0.35)",
-                background: active ? "rgba(330,85%,65%,0.08)" : "transparent",
               }}
             >
               <Icon
@@ -35,7 +34,7 @@ export function BottomNav() {
                 style={{
                   fill: active ? "hsl(330,85%,65%)" : "transparent",
                   stroke: active ? "hsl(330,85%,65%)" : "rgba(255,255,255,0.35)",
-                  strokeWidth: active ? 1.5 : 1.5,
+                  strokeWidth: 1.5,
                 }}
               />
               <span className="text-[9px] font-medium tracking-wide">{label}</span>
