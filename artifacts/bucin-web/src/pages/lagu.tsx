@@ -17,7 +17,7 @@ function SongCard({ song }: { song: Song }) {
       initial={{ opacity: 0, scale: 0.92 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="rounded-2xl border overflow-hidden cursor-pointer active:scale-95 transition-transform"
+      className={`rounded-2xl border overflow-hidden transition-transform ${hasAudio ? "cursor-pointer active:scale-95" : "cursor-default opacity-50"}`}
       style={{
         background: isThisSong
           ? "linear-gradient(145deg, rgba(180,40,100,0.18), rgba(130,20,80,0.10))"

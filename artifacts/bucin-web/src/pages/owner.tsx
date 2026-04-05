@@ -359,10 +359,19 @@ function SongsSection({ personId, name1, name2 }: { personId: number | null; nam
         <div className="space-y-2">
           {songs.map(song => (
             <div key={song.id} className="flex items-center gap-3 rounded-xl px-3 py-2.5 border border-white/8" style={{ background: "rgba(255,255,255,0.04)" }}>
-              <Music2 className="w-4 h-4 text-white/30 shrink-0" />
+              <div className="shrink-0 relative">
+                <Music2 className="w-4 h-4 shrink-0" style={{ color: song.audioUrl ? "hsl(330,85%,55%)" : "rgba(255,255,255,0.20)" }} />
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="text-white/80 text-sm truncate">{song.title}</p>
-                <p className="text-white/30 text-xs">{song.artist} · {personLabels[song.person] ?? song.person}</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-white/80 text-sm truncate">{song.title || "Tanpa judul"}</p>
+                  {!song.audioUrl && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded border border-white/10 text-white/25 shrink-0">no audio</span>
+                  )}
+                </div>
+                <p className="text-white/30 text-xs">
+                  {song.artist ? `${song.artist} · ` : ""}{personLabels[song.person] ?? song.person}
+                </p>
               </div>
               <Button variant="ghost" size="icon" className="w-7 h-7 text-white/20 hover:text-red-400 shrink-0"
                 onClick={() => deleteSong({ id: song.id })}>
