@@ -1,6 +1,9 @@
 [build]
-  command = "pnpm install && pnpm --filter @workspace/bucin-web run build:static"
+  command = "pnpm --filter @workspace/bucin-web run build:static"
   publish = "artifacts/bucin-web/dist-static"
+
+[build.environment]
+  NODE_VERSION = "24"
 
 [[redirects]]
   from = "/*"
