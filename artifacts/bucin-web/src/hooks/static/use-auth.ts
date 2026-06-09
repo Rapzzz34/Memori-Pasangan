@@ -1,53 +1,38 @@
-import { useState, useCallback } from "react";
-import { OWNER_PASSWORDS } from "@/data/content";
-
-const STORAGE_KEY = "kk_owner_auth";
-
-function readStorage(): { isOwner: boolean; personId: string | null } {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { isOwner: false, personId: null };
-    return JSON.parse(raw);
-  } catch {
-    return { isOwner: false, personId: null };
-  }
-}
+import { useState, useCallback, useEffect } from "react";
+import { authStore, passwordsStore } from "@/lib/stores";
 
 export function useAuth() {
-  const [auth, setAuth] = useState(() => readStorage());
+  const [, setTick] = useState(0);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  useEffect(() => authStore.subscribe(() => setTick((t) => t + 1)), []);
 
   const login = useCallback(
     async ({ data }: { data: { password: string } }) => {
       setIsLoggingIn(true);
-      await new Promise((r) => setTimeout(r, 300));
+      await new Promise((r) => setTimeout(r, 250));
 
+      const passwords = passwordsStore.get();
       const { password } = data;
-      let matched: { isOwner: boolean; personId: string | null } | null = null;
+      let personId: number | null = null;
 
-      if (password === OWNER_PASSWORDS.person1Password) {
-        matched = { isOwner: true, personId: "person1" };
-      } else if (password === OWNER_PASSWORDS.person2Password) {
-        matched = { isOwner: true, personId: "person2" };
-      }
+      if (password === passwords.p1) personId = 1;
+      else if (password === passwords.p2) personId = 2;
 
       setIsLoggingIn(false);
 
-      if (!matched) {
-        throw new Error("Kode salah");
-      }
+      if (personId === null) throw new Error("Kode salah");
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(matched));
-      setAuth(matched);
+      authStore.set({ isOwner: true, personId });
     },
     [],
   );
 
   const logout = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
-    setAuth({ isOwner: false, personId: null });
+    authStore.set({ isOwner: false, personId: null });
   }, []);
 
+  const auth = authStore.get();
   return {
     isOwner: auth.isOwner,
     personId: auth.personId,
