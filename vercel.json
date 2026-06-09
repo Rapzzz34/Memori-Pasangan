@@ -1,0 +1,6 @@
+{
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm --filter @workspace/bucin-web run build:static",
+  "outputDirectory": "artifacts/bucin-web/dist",
+  "framework": null
+}
