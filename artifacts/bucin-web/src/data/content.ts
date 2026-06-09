@@ -26,6 +26,17 @@ export const SETTINGS = {
   coverImageUrl: null as string | null,
 };
 
+/**
+ * PASSWORD OWNER PANEL
+ * Ganti dengan password yang kamu inginkan.
+ * person1Password → password untuk person 1
+ * person2Password → password untuk person 2
+ */
+export const OWNER_PASSWORDS = {
+  person1Password: "kenangan1",
+  person2Password: "kenangan2",
+};
+
 export const MEMORIES = [
   // Contoh — hapus atau ganti dengan kenangan aslinya:
   // {
