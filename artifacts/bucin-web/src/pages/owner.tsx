@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Plus, Settings, Image as ImageIcon, Trash2, LogOut, Music2, BookOpen, CheckSquare, Check, Pencil } from "lucide-react";
-import type { Memory } from "@workspace/api-client-react";
+import type { Memory } from "@/lib/types";
 
 const G = "linear-gradient(135deg, hsl(330,100%,55%), hsl(310,100%,50%))";
 const cardStyle = {

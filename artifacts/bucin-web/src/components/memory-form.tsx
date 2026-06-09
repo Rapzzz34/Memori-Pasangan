@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Image as ImageIcon } from "lucide-react";
-import type { Memory } from "@workspace/api-client-react";
+import type { Memory } from "@/lib/types";
 
 // Custom schema for creating (requires photo)
 const createSchema = z.object({

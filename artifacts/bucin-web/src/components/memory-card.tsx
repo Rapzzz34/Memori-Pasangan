@@ -1,4 +1,4 @@
-import { Memory } from "@workspace/api-client-react";
+import type { Memory } from "@/lib/types";
 import { formatDate } from "@/lib/date-utils";
 import { Card, CardContent } from "@/components/ui/card";
 

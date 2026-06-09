@@ -33,6 +33,10 @@ export default defineConfig({
         "src/hooks/static/use-auth.ts",
       ),
       "@": path.resolve(import.meta.dirname, "src"),
+      "@workspace/api-client-react": path.resolve(
+        import.meta.dirname,
+        "src/lib/workspace-stub.ts",
+      ),
     },
     dedupe: ["react", "react-dom"],
   },

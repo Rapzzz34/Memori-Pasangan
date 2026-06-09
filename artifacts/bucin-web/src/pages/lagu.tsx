@@ -4,7 +4,7 @@ import { useAudio } from "@/contexts/audio-context";
 import { Layout } from "@/components/layout";
 import { Music2, Play, Pause, Heart } from "lucide-react";
 import { motion } from "framer-motion";
-import type { Song } from "@workspace/api-client-react";
+import type { Song } from "@/lib/types";
 
 function SongCard({ song }: { song: Song }) {
   const { toggle, currentSong, isPlaying } = useAudio();
