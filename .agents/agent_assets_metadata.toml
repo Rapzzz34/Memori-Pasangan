@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "49oJ7OtApvuM7Og6xrSLG"
+uri = "file://artifacts/bucin-web/kenangan-kita-netlify.zip"
+type = "unspecified"
+title = "kenangan-kita-netlify.zip"
