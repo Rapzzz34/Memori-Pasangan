@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm install && pnpm --filter @workspace/bucin-web run build:static"
+  publish = "artifacts/bucin-web/dist-static"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
