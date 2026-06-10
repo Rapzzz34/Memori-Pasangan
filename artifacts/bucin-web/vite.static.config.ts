@@ -32,6 +32,10 @@ export default defineConfig({
         import.meta.dirname,
         "src/hooks/static/use-auth.ts",
       ),
+      "@/components/login-form": path.resolve(
+        import.meta.dirname,
+        "src/components/static/login-form.tsx",
+      ),
       "@": path.resolve(import.meta.dirname, "src"),
       "@workspace/api-client-react": path.resolve(
         import.meta.dirname,

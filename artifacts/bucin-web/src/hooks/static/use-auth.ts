@@ -1,44 +1,56 @@
-import { useState, useCallback, useEffect } from "react";
-import { authStore, passwordsStore } from "@/lib/stores";
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
+
+function personIdFromUser(user: User | null): number | null {
+  if (!user) return null;
+  const pid = user.user_metadata?.person_id;
+  if (pid === 1 || pid === 2) return pid;
+  return null;
+}
 
 export function useAuth() {
-  const [, setTick] = useState(0);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  useEffect(() => authStore.subscribe(() => setTick((t) => t + 1)), []);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null);
+      setIsLoading(false);
+    });
 
-  const login = useCallback(
-    async ({ data }: { data: { password: string } }) => {
-      setIsLoggingIn(true);
-      await new Promise((r) => setTimeout(r, 250));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
 
-      const passwords = passwordsStore.get();
-      const { password } = data;
-      let personId: number | null = null;
-
-      if (password === passwords.p1) personId = 1;
-      else if (password === passwords.p2) personId = 2;
-
-      setIsLoggingIn(false);
-
-      if (personId === null) throw new Error("Kode salah");
-
-      authStore.set({ isOwner: true, personId });
-    },
-    [],
-  );
-
-  const logout = useCallback(() => {
-    authStore.set({ isOwner: false, personId: null });
+    return () => subscription.unsubscribe();
   }, []);
 
-  const auth = authStore.get();
+  const login = useCallback(async ({ data }: { data: { email: string; password: string } }) => {
+    setIsLoggingIn(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+      if (error) throw error;
+    } finally {
+      setIsLoggingIn(false);
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+  }, []);
+
   return {
-    isOwner: auth.isOwner,
-    personId: auth.personId,
+    isOwner: !!user,
+    personId: personIdFromUser(user),
+    isLoading,
     login,
-    logout,
-    isLoading: false,
     isLoggingIn,
+    logout,
   };
 }
